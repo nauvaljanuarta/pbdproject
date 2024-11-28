@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\DB;
 
 use Illuminate\Http\Request;
 
@@ -9,10 +10,12 @@ class BarangController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        
-    }
+        public function index()
+        {
+            $barang = DB::select('SELECT * FROM barang');
+            $satuan = DB::select('SELECT * FROM satuan');
+            return view('admin.barang', compact('barang', 'satuan'));
+        }
 
     /**
      * Show the form for creating a new resource.

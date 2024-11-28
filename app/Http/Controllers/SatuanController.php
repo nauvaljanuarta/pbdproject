@@ -1,95 +1,62 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
+use App\Models\Satuan;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class SatuanController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // Show all satuan (using the view)
     public function index()
     {
+        // Fetch all records from the view_satuan view using the model
+        $satuan = Satuan::all();
 
-        $satuan = DB::select('SELECT * FROM satuan');
-        return view('admin.satuan', ['satuan' => $satuan]);
-
+        return view('admin.satuan', compact('satuan'));
     }
 
-
-    public function create()
-    {
-        //
-    }
-
+    // Store a new satuan (call sp_create_satuan stored procedure)
     public function store(Request $request)
     {
         $request->validate([
-            'nama_satuan' => 'required',
+            'nama_satuan' => 'required|string|max:45',
             'status' => 'required|boolean',
         ]);
 
-        $maxId = DB::table('satuan')->max('idsatuan');
-        $newId = $maxId ? $maxId + 1 : 1;
+        DB::statement('CALL sp_create_satuan(?, ?)', [
+            $request->nama_satuan,
+            $request->status,
+        ]);
 
-
-        DB::insert('INSERT INTO satuan (idsatuan, nama_satuan, status) VALUES (?, ?, ?)', [$newId, $request->nama_satuan, $request->status]);
-
-        return redirect()->back()->with('success', 'Satuan added successfully.');
+        return redirect()->back()->with('satuan creatted successfully');
     }
 
-
+    // Update a satuan (call sp_update_satuan stored procedure)
     public function update(Request $request, $id)
     {
         $request->validate([
-            'nama_satuan' => 'required|string|max:255',
+            'nama_satuan' => 'required|string|max:45',
             'status' => 'required|boolean',
         ]);
 
-        Log::info("Updating satuan with ID: $id", [
-            'nama_satuan' => $request->nama_satuan,
-            'status' => $request->status,
-        ]);
-
-        // Execute the update query
-        $updated = DB::update('UPDATE satuan SET nama_satuan = ?, status = ? WHERE idsatuan = ?', [
+        DB::statement('CALL sp_update_satuan(?, ?, ?)', [
+            $id,
             $request->nama_satuan,
             $request->status,
-            $id
         ]);
 
-        if ($updated) {
-            return redirect()->back()->with('success', 'Satuan updated successfully.');
-        } else {
-            return redirect()->back()->with('error', 'Failed to update Satuan. Please try again.');
-        }
+        return redirect()->back()->with('satuan creatted successfully');
     }
 
+
+    // Delete a satuan (call sp_delete_satuan stored procedure)
     public function destroy($id)
     {
+        DB::statement('CALL sp_delete_satuan(?)', [$id]);
 
-        $count = DB::table('barang')->where('idsatuan', $id)->count();
-
-        if ($count > 0) {
-            return redirect()->back()->with('error', 'Gagal menghapus Satuan. Terdapat data barang yang terkait.');
-        }
-
-
-        DB::delete('DELETE FROM satuan WHERE idsatuan = ?', [$id]);
-
-        return redirect()->back()->with('delete', 'Satuan deleted successfully.');
+        return redirect()->back()->with('satuan creatted successfully');
     }
-
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
+    
 }
