@@ -1,6 +1,6 @@
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
     <div class="app-brand demo">
-      <a href="index.html" class="app-brand-link">
+      <a href="/dashboard" class="app-brand-link">
         <span class="app-brand-logo demo">
           <svg
             width="25"
@@ -50,7 +50,7 @@
             </g>
           </svg>
         </span>
-        <span class="app-brand-text demo menu-text fw-bold ms-2">sneat</span>
+        <span class="app-brand-text demo menu-text fw-bold ms-2">e Commerce</span>
       </a>
 
       <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
@@ -59,27 +59,48 @@
     </div>
 
     <div class="menu-inner-shadow"></div>
-
     <ul class="menu-inner py-1">
       <!-- Dashboards -->
       <li class="menu-item">
-        <a href="/admin/dashboard" class="menu-link">
+        <a href="/dashboard" class="menu-link">
           <i class="menu-icon tf-icons bx bx-home-smile"></i>
           <div class="text-truncate" data-i18n="Dashboards">Dashboards</div>
           <span class="badge rounded-pill bg-danger ms-auto">5</span>
         </a>
       </li>
+
       <li class="menu-item">
-        <a href="/admin/barang" class="menu-link">
-          <i class="menu-icon tf-icons bx bx-box"></i>
-          <div class="text-truncate" data-i18n="Barang">Barang</div>
+        <a href="#" class="menu-link menu-toggle">
+          <i class="menu-icon tf-icons bx bx-crown"></i>
+          <div class="text-truncate" data-i18n="Layouts">Master</div>
         </a>
-      </li>
-      <li class="menu-item">
-        <a href="/admin/satuan" class="menu-link">
-          <i class="menu-icon tf-icons bx bx-columns"></i>
-          <div class="text-truncate" data-i18n="Satuan">Satuan</div>
-        </a>
+        <ul class="menu-sub">
+            <li class="menu-item">
+                <a href="/admin/barang" class="menu-link">
+                  <div class="text-truncate" data-i18n="Barang">Barang</div>
+                </a>
+              </li>
+            <li class="menu-item">
+                <a href="/admin/satuan" class="menu-link">
+                  <div class="text-truncate" data-i18n="Satuan">Satuan</div>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="/admin/vendor" class="menu-link">
+                  <div class="text-truncate" data-i18n="Vendor">Vendor</div>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="/admin/user" class="menu-link">
+                  <div class="text-truncate" data-i18n="User">User</div>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="/admin/role" class="menu-link">
+                  <div class="text-truncate" data-i18n="Role">Role</div>
+                </a>
+            </li>
+        </ul>
       </li>
 
       <!-- Layouts -->
