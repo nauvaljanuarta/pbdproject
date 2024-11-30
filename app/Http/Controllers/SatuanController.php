@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 class SatuanController extends Controller
 {
-    // Show all satuan (using the view)
+
     public function index()
     {
         // Fetch all records from the view_satuan view using the model
@@ -17,7 +17,6 @@ class SatuanController extends Controller
         return view('admin.satuan', compact('satuan'));
     }
 
-    // Store a new satuan (call sp_create_satuan stored procedure)
     public function store(Request $request)
     {
         $request->validate([
@@ -58,5 +57,5 @@ class SatuanController extends Controller
 
         return redirect()->back()->with('satuan creatted successfully');
     }
-    
+
 }

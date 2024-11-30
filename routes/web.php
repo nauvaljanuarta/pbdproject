@@ -15,9 +15,7 @@ Route::get('/', function () {
 Route::get('/admin/role', function () {
     return view('admin.role');
 });
-Route::get('/admin/user', function () {
-    return view('admin.user');
-});
+
 
 Route::get('/coba', function () {
     return view('coba');
@@ -29,6 +27,18 @@ Route::get('/register', [AuthController::class, 'registerview']);
 
 //dashboard
 Route::get('/dashboard',[UserController::class, 'index']);
+
+//role
+Route::get('admin/role', [RoleController::class, 'index']);
+Route::post('admin/role/add', [RoleController::class, 'store'])->name('add.role');
+Route::put('admin/role/{id}', [RoleController::class, 'update'])->name('update.role');
+Route::delete('admin/role/{id}', [RoleController::class, 'destroy'])->name('destroy.role');
+
+//user
+Route::get('admin/user', [UserController::class, 'detail']);
+Route::post('admin/user/add', [UserController::class, 'store'])->name('add.user');
+Route::put('admin/user/{id}', [UserController::class, 'update'])->name('update.user');
+Route::delete('admin/user/{id}', [UserController::class, 'destroy'])->name('destroy.user');
 
 //satuan
 Route::get('admin/satuan', [SatuanController::class, 'index']);
@@ -42,14 +52,9 @@ Route::post('admin/barang/add', [BarangController::class, 'store'])->name('add.b
 Route::put('admin/barang/{id}', [BarangController::class, 'update'])->name('update.barang');
 Route::delete('admin/barang/{id}', [BarangController::class, 'destroy'])->name('destroy.barang');
 
-//role
-Route::get('admin/role', [RoleController::class, 'index']);
-Route::post('admin/role/add', [RoleController::class, 'store'])->name('add.role');
-Route::put('admin/role/{id}', [RoleController::class, 'update'])->name('update.role');
-Route::delete('admin/role/{id}', [RoleController::class, 'destroy'])->name('destroy.role');
+//vendor
+Route::get('admin/vendor', [VendorController::class, 'index']);
+Route::post('admin/vendor/add', [VendorController::class, 'store'])->name('add.vendor');
+Route::put('admin/vendor/{id}', [VendorController::class, 'update'])->name('update.vendor');
+Route::delete('admin/vendor/{id}', [VendorController::class, 'destroy'])->name('destroy.vendor');
 
-//role
-Route::get('admin/role', [RoleController::class, 'index']);
-Route::post('admin/role/add', [RoleController::class, 'store'])->name('add.role');
-Route::put('admin/role/{id}', [RoleController::class, 'update'])->name('update.role');
-Route::delete('admin/role/{id}', [RoleController::class, 'destroy'])->name('destroy.role');

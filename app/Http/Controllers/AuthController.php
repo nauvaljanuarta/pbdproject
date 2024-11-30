@@ -13,7 +13,7 @@ class AuthController extends Controller
     public function login()
     {
 
-        return view('auth.login');
+        // isi dengan logika login
     }
     public function registerview()
     {
@@ -21,10 +21,10 @@ class AuthController extends Controller
     }
     public function register()
     {
-        return view('auth.login', compact('barang', 'satuan'));
+        // isi dengan logika register
     }
     public function logout()
     {
-        return view('auth.login', compact('barang', 'satuan'));
+
     }
 }

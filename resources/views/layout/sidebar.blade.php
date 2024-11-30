@@ -60,34 +60,24 @@
 
     <div class="menu-inner-shadow"></div>
     <ul class="menu-inner py-1">
-      <!-- Dashboards -->
-      <li class="menu-item">
-        <a href="/dashboard" class="menu-link">
-          <i class="menu-icon tf-icons bx bx-home-smile"></i>
-          <div class="text-truncate" data-i18n="Dashboards">Dashboards</div>
-          <span class="badge rounded-pill bg-danger ms-auto">5</span>
-        </a>
-      </li>
+        <!-- Dashboards -->
+        <li class="menu-item">
+            <a href="/dashboard" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-home-smile"></i>
+                <div class="text-truncate" data-i18n="Dashboards">Dashboards</div>
+                <span class="badge rounded-pill bg-danger ms-auto">5</span>
+            </a>
+        </li>
 
-      <li class="menu-item">
-        <a href="#" class="menu-link menu-toggle">
-          <i class="menu-icon tf-icons bx bx-crown"></i>
-          <div class="text-truncate" data-i18n="Layouts">Master</div>
-        </a>
-        <ul class="menu-sub">
+        <li class="menu-item">
+            <a href="#" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-crown"></i>
+                <div class="text-truncate" data-i18n="Layouts">Master</div>
+            </a>
+            <ul class="menu-sub">
             <li class="menu-item">
-                <a href="/admin/barang" class="menu-link">
-                  <div class="text-truncate" data-i18n="Barang">Barang</div>
-                </a>
-              </li>
-            <li class="menu-item">
-                <a href="/admin/satuan" class="menu-link">
-                  <div class="text-truncate" data-i18n="Satuan">Satuan</div>
-                </a>
-            </li>
-            <li class="menu-item">
-                <a href="/admin/vendor" class="menu-link">
-                  <div class="text-truncate" data-i18n="Vendor">Vendor</div>
+                <a href="/admin/role" class="menu-link">
+                    <div class="text-truncate" data-i18n="Role">Role</div>
                 </a>
             </li>
             <li class="menu-item">
@@ -96,8 +86,18 @@
                 </a>
             </li>
             <li class="menu-item">
-                <a href="/admin/role" class="menu-link">
-                  <div class="text-truncate" data-i18n="Role">Role</div>
+                <a href="/admin/satuan" class="menu-link">
+                  <div class="text-truncate" data-i18n="Satuan">Satuan</div>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="/admin/barang" class="menu-link">
+                    <div class="text-truncate" data-i18n="Barang">Barang</div>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="/admin/vendor" class="menu-link">
+                  <div class="text-truncate" data-i18n="Vendor">Vendor</div>
                 </a>
             </li>
         </ul>

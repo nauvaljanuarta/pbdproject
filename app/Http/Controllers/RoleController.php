@@ -1,65 +1,58 @@
 <?php
 
+
 namespace App\Http\Controllers;
 
 use App\Models\Role;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class RoleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
-        //
+
+        $roles = Role::all();
+        return view('admin.role', compact('roles'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nama_role' => 'required|string|max:100',
+        ]);
+
+        DB::statement('CALL sp_create_role(?)', [
+            $request->nama_role,
+        ]);
+
+        return redirect()->back()->with('success', 'Role created successfully!');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Role $role)
+    public function update(Request $request, $id)
     {
-        //
+
+        $request->validate([
+            'nama_role' => 'required|string|max:100',
+        ]);
+
+        DB::statement('CALL sp_update_role(?, ?)', [
+            $id,
+            $request->nama_role,
+        ]);
+
+
+        return redirect()->back()->with('success', 'Role updated successfully!');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Role $role)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Role $role)
+    public function destroy($id)
     {
-        //
-    }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Role $role)
-    {
-        //
+        DB::statement('CALL sp_delete_role(?)', [$id]);
+
+        return redirect()->back()->with('success', 'Role deleted successfully!');
     }
 }
