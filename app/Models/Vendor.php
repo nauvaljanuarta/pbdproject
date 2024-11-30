@@ -7,5 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Vendor extends Model
 {
-    use HasFactory;
+    protected $table = 'view_vendor';
+    protected $primaryKey = 'idvendor';
+    public $timestamps = false; 
+    protected $fillable = [
+        'nama_vendor',
+        'badan_hukum',
+        'status'
+    ];
+
 }

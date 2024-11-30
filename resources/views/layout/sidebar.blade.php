@@ -100,6 +100,11 @@
                   <div class="text-truncate" data-i18n="Vendor">Vendor</div>
                 </a>
             </li>
+            <li class="menu-item">
+                <a href="/admin/margin" class="menu-link">
+                  <div class="text-truncate" data-i18n="Margin">Margin</div>
+                </a>
+            </li>
         </ul>
       </li>
 

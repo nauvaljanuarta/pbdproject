@@ -2,64 +2,48 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Vendor;
 use Illuminate\Http\Request;
+use App\Models\Vendor;
+use Illuminate\Support\Facades\DB;
 
 class VendorController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
-        //
+
+        $vendors = Vendor::all();
+        return view('admin.vendor', compact('vendors'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        DB::statement('CALL sp_create_vendor(?, ?, ?)', [
+            $request->nama_vendor,
+            $request->badan_hukum,
+            $request->status
+        ]);
+
+        return redirect()->back()->with('success', 'Vendor created successfully!');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Vendor $vendor)
+    public function update(Request $request, $id)
     {
-        //
+        DB::statement('CALL sp_update_vendor(?, ?, ?, ?)', [
+            $id,
+            $request->nama_vendor,
+            $request->badan_hukum,
+            $request->status
+        ]);
+
+        return redirect()->back()->with('success', 'Vendor updated successfully!');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Vendor $vendor)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Vendor $vendor)
+    public function destroy($id)
     {
-        //
-    }
+        DB::statement('CALL sp_delete_vendor(?)', [$id]);
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Vendor $vendor)
-    {
-        //
+        return redirect()->back()->with('success', 'Vendor deleted successfully!');
     }
 }

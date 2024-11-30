@@ -7,6 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\VendorController;
+use App\Http\Controllers\MarginController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -18,7 +19,7 @@ Route::get('/admin/role', function () {
 
 
 Route::get('/coba', function () {
-    return view('coba');
+    return view('pengadaan.detail');
 });
 
 //auth
@@ -57,4 +58,10 @@ Route::get('admin/vendor', [VendorController::class, 'index']);
 Route::post('admin/vendor/add', [VendorController::class, 'store'])->name('add.vendor');
 Route::put('admin/vendor/{id}', [VendorController::class, 'update'])->name('update.vendor');
 Route::delete('admin/vendor/{id}', [VendorController::class, 'destroy'])->name('destroy.vendor');
+
+// marginpenjualan
+Route::get('admin/margin', [MarginController::class, 'index']);
+Route::post('admin/margin/add', [MarginController::class, 'store'])->name('add.margin');
+Route::put('admin/margin/{id}', [MarginController::class, 'update'])->name('update.margin');
+Route::delete('admin/margin/{id}', [MarginController::class, 'destroy'])->name('destroy.margin');
 
