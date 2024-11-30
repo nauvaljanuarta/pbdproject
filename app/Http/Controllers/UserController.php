@@ -33,7 +33,7 @@ class UserController extends Controller
             $request->password,
             $request->idrole,
         ]);
-        
+
 
         return redirect()->back()->with('success', 'User created successfully!');
     }
@@ -43,17 +43,17 @@ class UserController extends Controller
     {
 
         $request->validate([
-            'idrole' => 'required|integer|exists:role,idrole',  // Ensure role exists
             'username' => 'required|string|max:100',
-            'password' => 'nullable|string|min:6|confirmed',  // Optional password
+            'password' => 'nullable|string|min:6|confirmed',
+            'idrole' => 'required|integer|exists:role,idrole',
         ]);
 
         // Call the stored procedure to update the user
         DB::statement('CALL sp_update_user(?, ?, ?, ?)', [
             $id,
-            $request->idrole,
             $request->username,
-            $request->password ? $request->password : null,  // Only update password if provided
+            $request->password ? $request->password : null,
+            $request->idrole,
         ]);
 
         return redirect()->back()->with('success', 'User updated successfully!');
