@@ -14,7 +14,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-    <title>Demo : Login Basic - Pages | sneat - Bootstrap Dashboard PRO</title>
+    <title>Login</title>
 
     <meta name="description" content="" />
 
@@ -110,23 +110,28 @@
                       </g>
                     </svg>
                   </span>
-                  <span class="app-brand-text demo text-heading fw-bold">sneat</span>
+                  <span class="app-brand-text demo text-heading fw-bold">e - Commerce</span>
                 </a>
               </div>
               <!-- /Logo -->
-              <h4 class="mb-1">Welcome to sneat! 👋</h4>
-              <p class="mb-6">Please sign-in to your account and start the adventure</p>
+              <h4 class="mb-1">Welcome to e-Commerce! 👋</h4>
+              <p class="mb-6">Please sign-in to your account and start manage</p>
 
-              <form id="formAuthentication" class="mb-6" action="index.html">
+              <form id="formAuthentication" class="mb-6" method="POST" action="{{ route('login') }}">
+                @csrf
                 <div class="mb-6">
-                  <label for="email" class="form-label">Email or Username</label>
+                  <label for="username" class="form-label">Username</label>
                   <input
                     type="text"
                     class="form-control"
-                    id="email"
-                    name="email-username"
-                    placeholder="Enter your email or username"
-                    autofocus />
+                    id="username"
+                    name="username"
+                    placeholder="Enter your username"
+                    autofocus
+                    value="{{ old('username') }}" />
+                  @error('username')
+                  <small class="text-danger">{{ $message }}</small>
+                  @enderror
                 </div>
                 <div class="mb-6 form-password-toggle">
                   <label class="form-label" for="password">Password</label>
@@ -137,25 +142,18 @@
                       class="form-control"
                       name="password"
                       placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                      aria-describedby="password" />
+                      required />
                     <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
                   </div>
-                </div>
-                <div class="mb-8">
-                  <div class="d-flex justify-content-between mt-8">
-                    <div class="form-check mb-0 ms-2">
-                      <input class="form-check-input" type="checkbox" id="remember-me" />
-                      <label class="form-check-label" for="remember-me"> Remember Me </label>
-                    </div>
-                    <a href="auth-forgot-password-basic.html">
-                      <span>Forgot Password?</span>
-                    </a>
-                  </div>
+                  @error('password')
+                  <small class="text-danger">{{ $message }}</small>
+                  @enderror
                 </div>
                 <div class="mb-6">
                   <button class="btn btn-primary d-grid w-100" type="submit">Login</button>
                 </div>
               </form>
+
 
               <p class="text-center">
                 <span>New on our platform?</span>

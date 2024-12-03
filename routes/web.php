@@ -22,12 +22,15 @@ Route::get('/coba', function () {
     return view('pengadaan.detail');
 });
 
-//auth
+// Auth routes
 Route::get('/', [AuthController::class, 'loginview']);
-Route::get('/register', [AuthController::class, 'registerview']);
+Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::get('register', [AuthController::class, 'registerview']);
+Route::post('register', [AuthController::class, 'register'])->middleware('guest');
+Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
-//dashboard
-Route::get('/dashboard',[UserController::class, 'index']);
+Route::get('/dashboard', [UserController::class, 'index'])->name('dashboard');
+
 
 //role
 Route::get('admin/role', [RoleController::class, 'index']);
