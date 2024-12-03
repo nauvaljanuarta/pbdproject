@@ -17,14 +17,6 @@
                     <form action="{{ route('add.margin') }}" method="POST">
                         @csrf
                         <div class="mb-3">
-                            <label for="iduser" class="form-label">User</label>
-                            <select class="form-control" name="iduser" required>
-                                @foreach($users as $user)
-                                    <option value="{{ $user->iduser }}">{{ $user->username }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="mb-3">
                             <label for="persen" class="form-label">Persen Margin (%)</label>
                             <input type="number" step="0.01" class="form-control" name="persen" required>
                         </div>

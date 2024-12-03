@@ -15,13 +15,21 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
+        // Validasi input
+        $request->validate([
+            'username' => 'required|string',
+            'password' => 'required|string',
+        ]);
 
-        // Query untuk mencari user dengan username
         $user = DB::table('user')->where('username', $request->username)->first();
 
+        if ($user) {
 
-        if (Auth::attempt($request->only('email', 'password'), $request->has('remember'))) {
-            $user = Auth::user();
+            if ($request->password == $user->password) {
+                Auth::loginUsingId($user->iduser);
+
+                return redirect('/dashboard')->with('success', 'Login berhasil.');
+            }
         }
 
         // Jika username atau password salah
@@ -41,7 +49,7 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
 
         // Redirect ke halaman login
-        return redirect('/login')->with('success', 'Logout berhasil!');
+        return redirect('/')->with('success', 'Logout berhasil!');
     }
 
     public function registerview()

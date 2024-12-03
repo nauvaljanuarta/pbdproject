@@ -8,6 +8,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\VendorController;
 use App\Http\Controllers\MarginController;
+use App\Http\Controllers\PengadaanController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -25,9 +26,9 @@ Route::get('/coba', function () {
 // Auth routes
 Route::get('/', [AuthController::class, 'loginview']);
 Route::post('/login', [AuthController::class, 'login'])->name('login');
-Route::get('register', [AuthController::class, 'registerview']);
-Route::post('register', [AuthController::class, 'register'])->middleware('guest');
-Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('/register', [AuthController::class, 'registerview']);
+Route::post('/register', [AuthController::class, 'register'])->middleware('guest');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::get('/dashboard', [UserController::class, 'index'])->name('dashboard');
 
@@ -67,4 +68,11 @@ Route::get('admin/margin', [MarginController::class, 'index']);
 Route::post('admin/margin/add', [MarginController::class, 'store'])->name('add.margin');
 Route::put('admin/margin/{id}', [MarginController::class, 'update'])->name('update.margin');
 Route::delete('admin/margin/{id}', [MarginController::class, 'destroy'])->name('destroy.margin');
+
+//pengadaan
+Route::get('admin/pengadaan', [PengadaanController::class, 'index']);
+Route::get('admin/pengadaan/create', [PengadaanController::class, 'create'])->name('create.pengadaan');
+Route::post('admin/pengadaan/add', [PengadaanController::class, 'store'])->name('add.pengadaan');
+Route::get('admin/pengadaan/detail/{id}', [PengadaanController::class, 'show'])->name('detail.pengadaan');
+Route::delete('admin/pengadaan/{id}', [PengadaanController::class, 'destroy'])->name('destroy.pengadaan');
 

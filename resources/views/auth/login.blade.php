@@ -129,7 +129,7 @@
                     placeholder="Enter your username"
                     autofocus
                     value="{{ old('username') }}" />
-                  @error('username')
+                  @error('login')
                   <small class="text-danger">{{ $message }}</small>
                   @enderror
                 </div>

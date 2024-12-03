@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Margin;
 use App\Models\User;
 class MarginController extends Controller
@@ -18,16 +19,10 @@ class MarginController extends Controller
 
     public function store(Request $request)
     {
-        // Validasi data
-        $request->validate([
-            'iduser' => 'required|integer',
-            'persen' => 'required|numeric',
-            'status' => 'required|boolean',
-        ]);
+        $iduser =Auth::id();
 
-        // Memanggil prosedur penyimpanan data
         DB::statement('CALL sp_create_margin_penjualan(?, ?, ?)', [
-            $request->iduser,
+            $iduser,    
             $request->persen,
             $request->status
         ]);
@@ -35,9 +30,7 @@ class MarginController extends Controller
         return redirect()->back()->with('success', 'Margin Penjualan berhasil ditambahkan!');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+
     public function update(Request $request, $id)
     {
         // Validasi data
