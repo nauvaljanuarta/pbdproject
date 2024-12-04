@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Pengadaan;
 use App\Models\DetailPengadaan;
@@ -15,7 +16,7 @@ class PengadaanController extends Controller
     // Menampilkan halaman pengadaan
     public function index()
     {
-        $pengadaans = Pengadaan::with(['user', 'vendor', 'details.barang'])->get();
+        $pengadaans = Pengadaan::with(['user', 'vendor', 'details'])->get();
         return view('pengadaan.index', compact('pengadaans'));
     }
 
@@ -23,65 +24,80 @@ class PengadaanController extends Controller
     public function create()
     {
         $users = User::all();
-        $vendors = Vendor::where('status', 'A')->get(); // Hanya vendor aktif
-        $barangs = Barang::where('status', 1)->get(); // Hanya barang aktif
+        $vendors = Vendor::all(); // Hanya vendor aktif
+        $barangs = Barang::all(); // Hanya barang aktif
         return view('pengadaan.create', compact('users', 'vendors', 'barangs'));
     }
 
     // Menyimpan pengadaan baru
     public function store(Request $request)
     {
-        // Validasi data
-        $validatedData = $request->validate([
-            'user_iduser' => 'required|exists:users,iduser',
-            'vendor_idvendor' => 'required|exists:vendors,idvendor',
-            'status' => 'required|in:P,S,C',
-            'subtotal_nilai' => 'required|numeric',
-            'ppn' => 'required|numeric',
-            'total_nilai' => 'required|numeric',
-            'details.*.idbarang' => 'required|exists:barang,idbarang',
-            'details.*.harga_satuan' => 'required|numeric',
-            'details.*.jumlah' => 'required|numeric',
-            'details.*.sub_total' => 'required|numeric',
-        ]);
+        // Validasi input
+        // dd($request);
+        // Ambil data dari request
+        $idVendor = $request->input('id_vendor');
+        $subtotal = $request->input('subtotal');
+        $details = $request->input('details'); // Pastikan ini berupa array
 
-        // Mulai transaksi database
         try {
+            // Mulai transaksi
             DB::beginTransaction();
 
-            // Simpan pengadaan
-            $pengadaan = Pengadaan::create([
-                'user_iduser' => $validatedData['user_iduser'],
-                'vendor_idvendor' => $validatedData['vendor_idvendor'],
-                'status' => $validatedData['status'],
-                'subtotal_nilai' => $validatedData['subtotal_nilai'],
-                'ppn' => $validatedData['ppn'],
-                'total_nilai' => $validatedData['total_nilai'],
+            // Panggil fungsi MySQL untuk menghitung PPN
+            $ppn = DB::selectOne('SELECT pengadaan_PPN(?) AS ppn', [$subtotal])->ppn;
+
+            // Hitung total
+            $total = $subtotal + $ppn;
+            $iduser = Auth::id();
+            // Simpan data pengadaan menggunakan prosedur
+            $pengadaanId = DB::selectOne('CALL sp_create_pengadaan(?, ?, ?, ?, ?, ?, @p_idpengadaan)', [
+                $iduser, // The ID of the logged-in user
+                $idVendor, // The ID of the vendor
+                'P', // Status (e.g., 'A' for active)
+                $subtotal, // Subtotal value
+                $ppn, // PPN value
+                $total, // Total value
             ]);
 
+            // Ambil ID pengadaan dari variabel output
+            $pengadaanId = DB::selectOne('SELECT @p_idpengadaan AS idpengadaan')->idpengadaan;
+
             // Simpan detail pengadaan
-            foreach ($validatedData['details'] as $detail) {
-                DetailPengadaan::create([
-                    'idpengadaan' => $pengadaan->idpengadaan,
-                    'idbarang' => $detail['idbarang'],
-                    'harga_satuan' => $detail['harga_satuan'],
-                    'jumlah' => $detail['jumlah'],
-                    'sub_total' => $detail['sub_total'],
+            foreach ($details as $barang) {
+                DB::statement('CALL sp_create_detail_pengadaan(?, ?, ?, ?, ?)', [
+                    $pengadaanId,
+                    $barang['idbarang'],
+                    $barang['harga_satuan'],
+                    $barang['jumlah'],
+                    $barang['sub_total']
                 ]);
             }
 
+            // Commit transaksi
             DB::commit();
-            return redirect()->route('pengadaan.index')->with('success', 'Pengadaan berhasil ditambahkan.');
+
+            // Kembalikan respon sukses
+            return redirect()->back();
         } catch (\Exception $e) {
+            // Jika terjadi error, rollback transaksi
             DB::rollBack();
-            return back()->withErrors(['error' => 'Terjadi kesalahan saat menyimpan data.']);
+            dd($e);
+            // Kembalikan respon error
+            return response()->json(
+                [
+                    'message' => 'error',
+                    'error' => $e->getMessage(),
+                ],
+                500,
+            );
         }
     }
+
 
     // Menampilkan detail pengadaan
     public function show($id)
     {
-        $pengadaan = Pengadaan::with(['user', 'vendor', 'barang'])->findOrFail($id);
+        $pengadaan = DetailPengadaan::with(['pengadaan', 'barang'])->findOrFail($id);
         return view('pengadaan.detail', compact('pengadaan'));
     }
 }

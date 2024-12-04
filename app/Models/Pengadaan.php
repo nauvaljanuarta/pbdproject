@@ -36,7 +36,7 @@ class Pengadaan extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_iduser', 'iduser');
+        return $this->belongsTo(User::class, 'iduser', 'iduser');
     }
 
     public function vendor()

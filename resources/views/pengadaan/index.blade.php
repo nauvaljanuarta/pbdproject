@@ -29,18 +29,18 @@
                     <tbody>
                         @foreach($pengadaans as $pengadaan)
                         <tr>
-                            <td>{{ $pengadaan->idpengadaan }}</td>
-                            <td>{{ $pengadaan->user->username }}</td>
-                            <td>{{ $pengadaan->vendor->nama_vendor }}</td>
-                            <td>{{ $pengadaan->status }}</td>
-                            <td>Rp {{ number_format($pengadaan->total_nilai, 0, ',', '.') }}</td>
-                            <td>{{ \Carbon\Carbon::parse($pengadaan->timestamp)->format('d-m-Y H:i') }}</td>
+                            <td>{{ $pengadaan->id_pengadaan }}</td>
+                            <td>{{ $pengadaan->nama_user }}</td>
+                            <td>{{ $pengadaan->nama_vendor }}</td>
+                            <td>{{ $pengadaan->status_pengadaan }}</td>
+                            <td>Rp {{ number_format($pengadaan->total, 0, ',', '.') }}</td>
+                            <td>{{ \Carbon\Carbon::parse($pengadaan->waktu_pengadaan)->format('d-m-Y H:i') }}</td>
                             <td>
-                                <a href="{{ route('detail.pengadaan', $pengadaan->idpengadaan) }}" class="btn btn-info btn-sm">Lihat</a>
-                                <form action="{{ route('destroy.pengadaan', $pengadaan->idpengadaan) }}" method="POST" style="display:inline;" onsubmit="return confirm('Apakah Anda yakin ingin menghapus pengadaan ini?');">
+                                <a href="{{ route('detail.pengadaan', $pengadaan->id_pengadaan) }}" class="btn rounded-pill btn-warning">Lihat</a>
+                                <form action="{{ route('destroy.pengadaan', $pengadaan->id_pengadaan) }}" method="POST" style="display:inline;" onsubmit="return confirm('Apakah Anda yakin ingin menghapus pengadaan ini?');">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
+                                    <button type="submit" class="btn rounded-pill btn-danger">Delete</button>
                                 </form>
                             </td>
                         </tr>

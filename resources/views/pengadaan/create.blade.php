@@ -4,31 +4,23 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
-            <h2 class="mb-4">Tambah Pengadaan Baru</h2>
+            <h2 class="mb-4 text-center">Tambah Pengadaan Baru</h2>
         </div>
     </div>
 
     <!-- Form Tambah Pengadaan -->
     <div class="row justify-content-center">
         <div class="card col-md-12">
-            <h4 class="card-header">Form Pengadaan</h4>
+            <h4 class="card-header bg-primary text-white">Form Pengadaan</h4>
             <div class="card-body">
                 <form action="{{ route('add.pengadaan') }}" method="POST">
                     @csrf
-                    <!-- User dan Vendor -->
+
+                    <!-- Vendor -->
                     <div class="row mb-3">
                         <div class="col-md-6">
-                            <label for="user_iduser" class="form-label">User</label>
-                            <select name="user_iduser" id="user_iduser" class="form-control" required>
-                                <option value="">Pilih User</option>
-                                @foreach($users as $user)
-                                    <option value="{{ $user->iduser }}">{{ $user->username }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-md-6">
                             <label for="vendor_idvendor" class="form-label">Vendor</label>
-                            <select name="vendor_idvendor" id="vendor_idvendor" class="form-control" required>
+                            <select name="id_vendor" id="vendor_idvendor" class="form-control" required>
                                 <option value="">Pilih Vendor</option>
                                 @foreach($vendors as $vendor)
                                     <option value="{{ $vendor->idvendor }}">{{ $vendor->nama_vendor }}</option>
@@ -37,38 +29,19 @@
                         </div>
                     </div>
 
-                    <!-- Status, Subtotal, PPN, Total -->
+                    <!-- Subtotal Nilai -->
                     <div class="row mb-3">
                         <div class="col-md-6">
-                            <label for="status" class="form-label">Status</label>
-                            <select name="status" id="status" class="form-control" required>
-                                <option value="P">Proses</option>
-                                <option value="S">Selesai</option>
-                                <option value="C">Batal</option>
-                            </select>
-                        </div>
-                        <div class="col-md-3">
                             <label for="subtotal_nilai" class="form-label">Subtotal Nilai</label>
-                            <input type="number" name="subtotal_nilai" id="subtotal_nilai" class="form-control" required readonly>
-                        </div>
-                        <div class="col-md-3">
-                            <label for="ppn" class="form-label">PPN</label>
-                            <input type="number" name="ppn" id="ppn" class="form-control" required>
+                            <input type="number" name="subtotal" id="subtotal_nilai" class="form-control" required oninput="updateGrandTotal()">
                         </div>
                     </div>
 
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label for="total_nilai" class="form-label">Total Nilai</label>
-                            <input type="number" name="total_nilai" id="total_nilai" class="form-control" required readonly>
-                        </div>
-                    </div>
-
-                    <!-- Detail Pengadaan -->
-                    <h5 class="mt-4">Detail Pengadaan</h5>
+                    <!-- Detail Barang -->
+                    <h5 class="mt-4 mb-3">Detail Pengadaan</h5>
                     <div class="table-responsive">
                         <table class="table table-bordered" id="detail-table">
-                            <thead>
+                            <thead class="thead-dark">
                                 <tr>
                                     <th>Barang</th>
                                     <th>Harga Satuan</th>
@@ -80,7 +53,7 @@
                             <tbody>
                                 <tr>
                                     <td>
-                                        <select name="details[0][idbarang]" class="form-control barang-select" required>
+                                        <select name="details[0][idbarang]" class="form-control barang-select" required onchange="updateHargaSatuan(0)">
                                             <option value="">Pilih Barang</option>
                                             @foreach($barangs as $barang)
                                                 <option value="{{ $barang->idbarang }}" data-harga="{{ $barang->harga }}">{{ $barang->nama }}</option>
@@ -88,12 +61,13 @@
                                         </select>
                                     </td>
                                     <td><input type="number" name="details[0][harga_satuan]" class="form-control harga_satuan" required readonly></td>
-                                    <td><input type="number" name="details[0][jumlah]" class="form-control jumlah" required></td>
+                                    <td><input type="number" name="details[0][jumlah]" class="form-control jumlah" required oninput="updateSubTotal(0)"></td>
                                     <td><input type="number" name="details[0][sub_total]" class="form-control sub_total" required readonly></td>
                                     <td><button type="button" class="btn btn-danger remove-detail-row">Hapus</button></td>
                                 </tr>
                             </tbody>
                         </table>
+                        <br>
                         <button type="button" class="btn btn-success" id="add-detail-row">Tambah Detail</button>
                     </div>
 
@@ -136,11 +110,13 @@
             subtotal += subTotal;
         });
 
-        const ppn = parseFloat(document.getElementById('ppn').value) || 0;
+        const ppn = subtotal * 0.11; // PPN 11%
         const total = subtotal + ppn;
 
+        // Update form fields
         document.getElementById('subtotal_nilai').value = subtotal;
-        document.getElementById('total_nilai').value = total;
+        document.getElementById('ppn').value = ppn;  // If needed in frontend
+        document.getElementById('total_nilai').value = total;  // If needed in frontend
     }
 
     // Add event listener for dynamic rows
@@ -151,7 +127,7 @@
 
         newRow.innerHTML = `
             <td>
-                <select name="details[${rowCount}][idbarang]" class="form-control barang-select" required>
+                <select name="details[${rowCount}][idbarang]" class="form-control barang-select" required onchange="updateHargaSatuan(${rowCount})">
                     <option value="">Pilih Barang</option>
                     @foreach($barangs as $barang)
                         <option value="{{ $barang->idbarang }}" data-harga="{{ $barang->harga }}">{{ $barang->nama }}</option>
@@ -159,20 +135,17 @@
                 </select>
             </td>
             <td><input type="number" name="details[${rowCount}][harga_satuan]" class="form-control harga_satuan" required readonly></td>
-            <td><input type="number" name="details[${rowCount}][jumlah]" class="form-control jumlah" required></td>
+            <td><input type="number" name="details[${rowCount}][jumlah]" class="form-control jumlah" required oninput="updateSubTotal(${rowCount})"></td>
             <td><input type="number" name="details[${rowCount}][sub_total]" class="form-control sub_total" required readonly></td>
             <td><button type="button" class="btn btn-danger remove-detail-row">Hapus</button></td>
         `;
 
         // Attach event listeners to the new select and inputs
-        const barangSelect = newRow.querySelector('select[name="details[' + rowCount + '][idbarang]"]');
-        const hargaSatuanInput = newRow.querySelector('input[name="details[' + rowCount + '][harga_satuan]"]');
-        const jumlahInput = newRow.querySelector('input[name="details[' + rowCount + '][jumlah]"]');
-
+        const barangSelect = newRow.querySelector('.barang-select');
+        const jumlahInput = newRow.querySelector('.jumlah');
         barangSelect.addEventListener('change', function() {
             updateHargaSatuan(rowCount);
         });
-
         jumlahInput.addEventListener('input', function() {
             updateSubTotal(rowCount);
         });
@@ -185,19 +158,5 @@
             updateGrandTotal();
         }
     });
-
-    // Initialize event listeners for existing rows
-    document.querySelectorAll('.barang-select').forEach((select, index) => {
-        select.addEventListener('change', function() {
-            updateHargaSatuan(index);
-        });
-    });
-
-    document.querySelectorAll('.jumlah').forEach((input, index) => {
-        input.addEventListener('input', function() {
-            updateSubTotal(index);
-        });
-    });
 </script>
-
 @endsection

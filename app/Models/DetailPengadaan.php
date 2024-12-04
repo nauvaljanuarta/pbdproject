@@ -10,6 +10,8 @@ class DetailPengadaan extends Model
     use HasFactory;
 
     protected $table = 'v_detail_pengadaan'; // Nama view
+
+    protected $primaryKey = 'iddetail_pengadaan';
     public $timestamps = false;  // Karena ini adalah view, kita tidak perlu timestamps
 
     protected $fillable = [
