@@ -33,7 +33,23 @@
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="subtotal_nilai" class="form-label">Subtotal Nilai</label>
-                            <input type="number" name="subtotal" id="subtotal_nilai" class="form-control" required oninput="updateGrandTotal()">
+                            <input type="number" name="subtotal" id="subtotal_nilai" class="form-control" value="0" readonly>
+                        </div>
+                    </div>
+
+                    <!-- PPN -->
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="ppn" class="form-label">PPN (11%)</label>
+                            <input type="number"  id="ppn" class="form-control" value="0" readonly>
+                        </div>
+                    </div>
+
+                    <!-- Total Nilai -->
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="total_nilai" class="form-label">Total Nilai</label>
+                            <input type="number"  id="total_nilai" class="form-control" value="0" readonly>
                         </div>
                     </div>
 
@@ -79,20 +95,15 @@
 </div>
 
 <script>
-    // Function to update harga_satuan otomatis berdasarkan barang yang dipilih
     function updateHargaSatuan(rowIndex) {
         const barangSelect = document.querySelector(`select[name="details[${rowIndex}][idbarang]"]`);
         const hargaSatuanInput = document.querySelector(`input[name="details[${rowIndex}][harga_satuan]"]`);
-
-        // Ambil harga satuan berdasarkan pilihan barang
         const selectedOption = barangSelect.options[barangSelect.selectedIndex];
         const hargaSatuan = selectedOption ? selectedOption.getAttribute('data-harga') : 0;
         hargaSatuanInput.value = hargaSatuan;
-
-        updateSubTotal(rowIndex); // Update subtotal setelah harga satuan diperbarui
+        updateSubTotal(rowIndex);
     }
 
-    // Function to update subtotal per detail row
     function updateSubTotal(rowIndex) {
         const hargaSatuan = parseFloat(document.querySelector(`input[name="details[${rowIndex}][harga_satuan]"]`).value) || 0;
         const jumlah = parseFloat(document.querySelector(`input[name="details[${rowIndex}][jumlah]"]`).value) || 0;
@@ -101,7 +112,6 @@
         updateGrandTotal();
     }
 
-    // Function to update the grand total (subtotal + ppn)
     function updateGrandTotal() {
         let subtotal = 0;
         const rows = document.querySelectorAll('#detail-table tbody tr');
@@ -113,13 +123,11 @@
         const ppn = subtotal * 0.11; // PPN 11%
         const total = subtotal + ppn;
 
-        // Update form fields
         document.getElementById('subtotal_nilai').value = subtotal;
-        document.getElementById('ppn').value = ppn;  // If needed in frontend
-        document.getElementById('total_nilai').value = total;  // If needed in frontend
+        document.getElementById('ppn').value = ppn;
+        document.getElementById('total_nilai').value = total;
     }
 
-    // Add event listener for dynamic rows
     document.getElementById('add-detail-row').addEventListener('click', function() {
         let table = document.getElementById('detail-table').getElementsByTagName('tbody')[0];
         let rowCount = table.rows.length;
@@ -140,7 +148,6 @@
             <td><button type="button" class="btn btn-danger remove-detail-row">Hapus</button></td>
         `;
 
-        // Attach event listeners to the new select and inputs
         const barangSelect = newRow.querySelector('.barang-select');
         const jumlahInput = newRow.querySelector('.jumlah');
         barangSelect.addEventListener('change', function() {
@@ -151,7 +158,6 @@
         });
     });
 
-    // Handle the removal of detail rows
     document.getElementById('detail-table').addEventListener('click', function(event) {
         if (event.target.classList.contains('remove-detail-row')) {
             event.target.closest('tr').remove();

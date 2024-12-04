@@ -9,11 +9,9 @@ class DetailPengadaan extends Model
 {
     use HasFactory;
 
-    protected $table = 'v_detail_pengadaan'; // Nama view
-
+    protected $table = 'view_detail_pengadaan';
     protected $primaryKey = 'iddetail_pengadaan';
-    public $timestamps = false;  // Karena ini adalah view, kita tidak perlu timestamps
-
+    public $timestamps = false;
     protected $fillable = [
         'iddetail_pengadaan',
         'harga_satuan',
@@ -29,7 +27,6 @@ class DetailPengadaan extends Model
         'total_nilai'
     ];
 
-    // Jika Anda ingin menggunakan relasi dengan model lain, Anda bisa menambahkan relasi seperti di model biasa
     public function barang()
     {
         return $this->belongsTo(Barang::class, 'idbarang', 'idbarang');
@@ -37,6 +34,10 @@ class DetailPengadaan extends Model
 
     public function pengadaan()
     {
-        return $this->belongsTo(Pengadaan::class, 'idpengadaan', 'idpengadaan');
+        return $this->belongsTo(Pengadaan::class, 'id_pengadaan', 'id_pengadaan');
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'iduser', 'iduser');
     }
 }

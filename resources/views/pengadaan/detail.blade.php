@@ -14,17 +14,17 @@
         <div class="card-body">
             <div class="row mb-3">
                 <div class="col-md-6">
-                    <strong>User:</strong> {{ $pengadaan->user->username }}
+                    <strong>User : </strong> {{ $pengadaan->user_pengadaan}}
                 </div>
                 <div class="col-md-6">
-                    <strong>Vendor:</strong> {{ $pengadaan->vendor->nama_vendor }}
+                    <strong>Vendor : </strong> {{ $pengadaan->nama_vendor }}
                 </div>
             </div>
 
             <div class="row mb-3">
                 <div class="col-md-6">
-                    <strong>Status:</strong>
-                    @if($pengadaan->status == 'P')
+                    <strong>Status : </strong>
+                    @if($pengadaan->status_pengadaan == 'Proses')
                         Proses
                     @elseif($pengadaan->status == 'S')
                         Selesai
@@ -33,16 +33,16 @@
                     @endif
                 </div>
                 <div class="col-md-6">
-                    <strong>Subtotal Nilai:</strong> Rp {{ number_format($pengadaan->subtotal_nilai, 0, ',', '.') }}
+                    <strong>Subtotal Nilai : </strong> Rp {{ number_format($pengadaan->subtotal, 0, ',', '.') }}
                 </div>
             </div>
 
             <div class="row mb-3">
                 <div class="col-md-6">
-                    <strong>PPN:</strong> Rp {{ number_format($pengadaan->ppn, 0, ',', '.') }}
+                    <strong>PPN:</strong> Rp {{ number_format($pengadaan->nilai_ppn, 0, ',', '.') }}
                 </div>
                 <div class="col-md-6">
-                    <strong>Total Nilai:</strong> Rp {{ number_format($pengadaan->total_nilai, 0, ',', '.') }}
+                    <strong>Total Nilai:</strong> Rp {{ number_format($pengadaan->total, 0, ',', '.') }}
                 </div>
             </div>
         </div>
@@ -64,10 +64,11 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($pengadaan->details as $key => $detail)
+                        @foreach($details as $key => $detail)
                             <tr>
                                 <td>{{ $key + 1 }}</td>
-                                <td>{{ $detail->barang->nama }}</td>
+                                <!-- Akses nama_barang melalui relasi barang -->
+                                <td>{{ $detail->nama_barang }}</td>
                                 <td>Rp {{ number_format($detail->harga_satuan, 0, ',', '.') }}</td>
                                 <td>{{ $detail->jumlah }}</td>
                                 <td>Rp {{ number_format($detail->sub_total, 0, ',', '.') }}</td>
@@ -78,6 +79,9 @@
             </div>
         </div>
     </div>
+
+
+
 
 </div>
 @endsection

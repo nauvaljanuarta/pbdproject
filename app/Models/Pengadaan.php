@@ -12,11 +12,9 @@ class Pengadaan extends Model
     // Nama tabel (view)
     protected $table = 'view_pengadaan';
 
-    protected $primaryKey = null;
+    protected $primaryKey = 'id_pengadaan';
 
     public $timestamps = false;
-
-    public $incrementing = false;
 
     protected $fillable = [
         'id_pengadaan',
@@ -25,7 +23,7 @@ class Pengadaan extends Model
         'nama_vendor',
         'status_pengadaan',
         'subtotal',
-        'ppn',
+        'nilai_ppn',
         'total',
         'id_detail',
         'nama_barang',
@@ -34,18 +32,19 @@ class Pengadaan extends Model
         'subtotal_barang',
     ];
 
-    public function user()
+        public function user()
     {
-        return $this->belongsTo(User::class, 'iduser', 'iduser');
+        return $this->belongsTo(User::class, 'iduser');
     }
 
     public function vendor()
     {
-        return $this->belongsTo(Vendor::class, 'vendor_idvendor', 'idvendor');
+        return $this->belongsTo(Vendor::class, 'vendor_idvendor');
     }
 
     public function details()
     {
-        return $this->hasMany(DetailPengadaan::class, 'idpengadaan', 'idpengadaan');
+        return $this->hasMany(DetailPengadaan::class, 'iddetail_pengadaan');
     }
+
 }

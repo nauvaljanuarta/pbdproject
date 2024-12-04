@@ -29,11 +29,10 @@ class PengadaanController extends Controller
         return view('pengadaan.create', compact('users', 'vendors', 'barangs'));
     }
 
-    // Menyimpan pengadaan baru
     public function store(Request $request)
     {
         // Validasi input
-        // dd($request);
+
         // Ambil data dari request
         $idVendor = $request->input('id_vendor');
         $subtotal = $request->input('subtotal');
@@ -77,7 +76,7 @@ class PengadaanController extends Controller
             DB::commit();
 
             // Kembalikan respon sukses
-            return redirect()->back();
+            return redirect()->back()->with('success', 'Tambah pengadaan berhasil dilakukan');
         } catch (\Exception $e) {
             // Jika terjadi error, rollback transaksi
             DB::rollBack();
@@ -97,7 +96,9 @@ class PengadaanController extends Controller
     // Menampilkan detail pengadaan
     public function show($id)
     {
-        $pengadaan = DetailPengadaan::with(['pengadaan', 'barang'])->findOrFail($id);
-        return view('pengadaan.detail', compact('pengadaan'));
+        $pengadaan = Pengadaan::with(['details', 'vendor', 'user'])->findOrFail($id);
+        $details = DetailPengadaan::where('idpengadaan', $id)->get();
+        
+        return view('pengadaan.detail', compact('pengadaan', 'details'));
     }
 }
