@@ -4,14 +4,14 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
-            <h2 class="mb-4">Daftar Pengadaan</h2>
+            <h2 class="mb-4">Pengadaan</h2>
         </div>
     </div>
 
     <!-- Table Pengadaan -->
     <div class="row justify-content-center">
         <div class="card col-md-12">
-            <h4 class="card-header">Daftar Pengadaan</h4>
+            <h4 class="card-header">List Pengadaan</h4>
             <div class="table-responsive p-2">
                 <table class="table table-hover">
                     <thead class="table">

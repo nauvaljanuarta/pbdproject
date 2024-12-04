@@ -4,20 +4,21 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
-            <h2 class="mb-4 text-center">Tambah Pengadaan Baru</h2>
+            <h2 class="mb-4">Pengadaan barang</h2>
         </div>
     </div>
 
     <!-- Form Tambah Pengadaan -->
     <div class="row justify-content-center">
         <div class="card col-md-12">
-            <h4 class="card-header bg-primary text-white">Form Pengadaan</h4>
+            <h4 class="card-header">Form Pengadaan</h4>
             <div class="card-body">
                 <form action="{{ route('add.pengadaan') }}" method="POST">
                     @csrf
 
                     <!-- Vendor -->
                     <div class="row mb-3">
+                        <!-- Vendor -->
                         <div class="col-md-6">
                             <label for="vendor_idvendor" class="form-label">Vendor</label>
                             <select name="id_vendor" id="vendor_idvendor" class="form-control" required>
@@ -27,29 +28,25 @@
                                 @endforeach
                             </select>
                         </div>
-                    </div>
 
-                    <!-- Subtotal Nilai -->
-                    <div class="row mb-3">
+                        <!-- Subtotal Nilai -->
                         <div class="col-md-6">
                             <label for="subtotal_nilai" class="form-label">Subtotal Nilai</label>
                             <input type="number" name="subtotal" id="subtotal_nilai" class="form-control" value="0" readonly>
                         </div>
                     </div>
 
-                    <!-- PPN -->
                     <div class="row mb-3">
+                        <!-- PPN -->
                         <div class="col-md-6">
                             <label for="ppn" class="form-label">PPN (11%)</label>
-                            <input type="number"  id="ppn" class="form-control" value="0" readonly>
+                            <input type="number" id="ppn" class="form-control" value="0" readonly>
                         </div>
-                    </div>
 
-                    <!-- Total Nilai -->
-                    <div class="row mb-3">
+                        <!-- Total Nilai -->
                         <div class="col-md-6">
                             <label for="total_nilai" class="form-label">Total Nilai</label>
-                            <input type="number"  id="total_nilai" class="form-control" value="0" readonly>
+                            <input type="number" id="total_nilai" class="form-control" value="0" readonly>
                         </div>
                     </div>
 
@@ -92,6 +89,11 @@
             </div>
         </div>
     </div>
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
 </div>
 
 <script>

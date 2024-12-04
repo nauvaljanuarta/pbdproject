@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
-            <h2 class="mb-4">Detail Pengadaan</h2>
+            <h2 class="mb-4">Pengadaan</h2>
         </div>
     </div>
 
@@ -26,9 +26,9 @@
                     <strong>Status : </strong>
                     @if($pengadaan->status_pengadaan == 'Proses')
                         Proses
-                    @elseif($pengadaan->status == 'S')
+                    @elseif($pengadaan->status_pengadaan == 'Diterima')
                         Selesai
-                    @elseif($pengadaan->status == 'C')
+                    @elseif($pengadaan->status_pengadaan == 'Batal')
                         Batal
                     @endif
                 </div>
@@ -53,7 +53,7 @@
         <h4 class="card-header">Detail Barang Pengadaan</h4>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered">
+                <table class="table table-hover">
                     <thead>
                         <tr>
                             <th>No</th>
@@ -79,6 +79,15 @@
             </div>
         </div>
     </div>
+    <div class="row mt-4">
+        <div class="col-md-12 text-right">
+            <form action="{{ route('add.penerimaan', $pengadaan->id_pengadaan) }}" method="POST">
+                @csrf
+                <button type="submit" class="btn btn-primary">Confirm Penerimaan</button>
+            </form>
+        </div>
+    </div>
+
 
 
 

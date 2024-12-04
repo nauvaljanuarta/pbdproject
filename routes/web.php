@@ -9,6 +9,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\VendorController;
 use App\Http\Controllers\MarginController;
 use App\Http\Controllers\PengadaanController;
+use App\Http\Controllers\PenerimaanController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -75,4 +76,8 @@ Route::get('admin/pengadaan/create', [PengadaanController::class, 'create'])->na
 Route::post('admin/pengadaan/add', [PengadaanController::class, 'store'])->name('add.pengadaan');
 Route::get('admin/pengadaan/detail/{id}', [PengadaanController::class, 'show'])->name('detail.pengadaan');
 Route::delete('admin/pengadaan/{id}', [PengadaanController::class, 'destroy'])->name('destroy.pengadaan');
+
+// penerimaan
+Route::get('admin/penerimaan', [PenerimaanController::class, 'index']);
+Route::post('admin/penerimaan/{id}', [PenerimaanController::class, 'store'])->name('add.penerimaan');
 

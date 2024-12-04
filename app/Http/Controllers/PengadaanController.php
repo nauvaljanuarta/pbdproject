@@ -41,18 +41,17 @@ class PengadaanController extends Controller
         try {
             // Mulai transaksi
             DB::beginTransaction();
-
             // Panggil fungsi MySQL untuk menghitung PPN
             $ppn = DB::selectOne('SELECT pengadaan_PPN(?) AS ppn', [$subtotal])->ppn;
-
             // Hitung total
             $total = $subtotal + $ppn;
+
             $iduser = Auth::id();
-            // Simpan data pengadaan menggunakan prosedur
+
             $pengadaanId = DB::selectOne('CALL sp_create_pengadaan(?, ?, ?, ?, ?, ?, @p_idpengadaan)', [
-                $iduser, // The ID of the logged-in user
-                $idVendor, // The ID of the vendor
-                'P', // Status (e.g., 'A' for active)
+                $iduser,
+                $idVendor,
+                'P', // status A(diterima), C(batal), P(proses)
                 $subtotal, // Subtotal value
                 $ppn, // PPN value
                 $total, // Total value
@@ -71,7 +70,6 @@ class PengadaanController extends Controller
                     $barang['sub_total']
                 ]);
             }
-
             // Commit transaksi
             DB::commit();
 
@@ -92,13 +90,12 @@ class PengadaanController extends Controller
         }
     }
 
-
     // Menampilkan detail pengadaan
     public function show($id)
     {
         $pengadaan = Pengadaan::with(['details', 'vendor', 'user'])->findOrFail($id);
         $details = DetailPengadaan::where('idpengadaan', $id)->get();
-        
+
         return view('pengadaan.detail', compact('pengadaan', 'details'));
     }
 }

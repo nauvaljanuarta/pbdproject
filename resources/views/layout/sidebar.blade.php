@@ -153,7 +153,7 @@
       <!-- Pages -->
       <li class="menu-item">
         <a href="#" class="menu-link menu-toggle">
-            <i class="menu-icon tf-icons bx bx-box"></i>
+            <i class="menu-icon tf-icons bx bx-cart-add"></i>
             <div class="text-truncate" data-i18n="Pengadaan">Pengadaan</div>
         </a>
         <ul class="menu-sub">
@@ -164,6 +164,24 @@
         </li>
         <li class="menu-item">
             <a href="/admin/pengadaan/create" class="menu-link">
+              <div class="text-truncate" data-i18n="Tambah">Tambah</div>
+            </a>
+        </li>
+        </ul>
+      </li>
+      <li class="menu-item">
+        <a href="#" class="menu-link menu-toggle">
+            <i class="menu-icon tf-icons bx bx-cart-download"></i>
+            <div class="text-truncate" data-i18n="Penerimaan">Penerimaan</div>
+        </a>
+        <ul class="menu-sub">
+        <li class="menu-item">
+            <a href="/admin/penerimaan" class="menu-link">
+                <div class="text-truncate" data-i18n="Detail">Detail</div>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a href="/admin/penerimaan/create" class="menu-link">
               <div class="text-truncate" data-i18n="Tambah">Tambah</div>
             </a>
         </li>
