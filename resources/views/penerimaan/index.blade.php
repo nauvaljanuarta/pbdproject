@@ -16,11 +16,10 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>ID Penerimaan</th>
                             <th>ID Pengadaan</th>
                             <th>User Penerima</th>
                             <th>Status</th>
-                            <th>Waktu Dibuat</th>
+                            <th>Tanggal Penerimaan</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -28,21 +27,20 @@
                         @foreach($penerimaans as $key => $penerimaan)
                             <tr>
                                 <td>{{ $key + 1 }}</td>
-                                <td>{{ $penerimaan->idpenerimaan }}</td>
                                 <td>{{ $penerimaan->idpengadaan }}</td>
-                                <td>{{ $penerimaan->user_penerima }}</td>
+                                <td>{{ $penerimaan->penerima }}</td> <!-- Menampilkan username -->
                                 <td>
-                                    @if($penerimaan->status === 'P')
-                                        Proses
-                                    @elseif($penerimaan->status === 'S')
-                                        Selesai
-                                    @elseif($penerimaan->status === 'R')
-                                        Retur
+                                    @if($penerimaan->status_penerimaan === 'P')
+                                        <span class ="text-warning">Pending</span>
+                                    @elseif($penerimaan->status_penerimaan === 'A')
+                                        <span class ="text-success">Diterima</span>
+                                    @elseif($penerimaan->status_penerimaan === 'R')
+                                        <span class="text-danger">Retur</span>
                                     @endif
                                 </td>
-                                <td>{{ $penerimaan->created_at }}</td>
+                                <td>{{ $penerimaan->tanggal_penerimaan }}</td>
                                 <td>
-                                    <a href="{{ route('penerimaan.show', $penerimaan->idpenerimaan) }}" class="btn btn-primary btn-sm">
+                                    <a href="{{ route('detail.penerimaan', $penerimaan->idpenerimaan) }}" class="btn btn-primary btn-sm">
                                         Lihat Detail
                                     </a>
                                 </td>

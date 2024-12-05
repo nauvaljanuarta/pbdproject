@@ -31,8 +31,6 @@ class PengadaanController extends Controller
 
     public function store(Request $request)
     {
-        // Validasi input
-
         // Ambil data dari request
         $idVendor = $request->input('id_vendor');
         $subtotal = $request->input('subtotal');

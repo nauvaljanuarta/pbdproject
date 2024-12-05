@@ -35,7 +35,15 @@
                             <td>Rp {{ number_format($pengadaan->nilai_ppn, 0, ',', '.') }}</td>
                             <td>Rp {{ number_format($pengadaan->total, 0, ',', '.') }}</td>
                             <td>{{ ($pengadaan->waktu_pengadaan) }}</td>
-                            <td>{{ $pengadaan->status_pengadaan }}</td>
+                            <td>
+                                @if($pengadaan->status_pengadaan === 'C')
+                                    <span class="text-danger">Batal</span>
+                                @elseif($pengadaan->status_pengadaan === 'A')
+                                    <span class="text-success">Diterima</span>
+                                @elseif($pengadaan->status_pengadaan === 'P')
+                                    <span class="text-warning">Pending</span> 
+                                @endif
+                            </td>
                             <td>
                                 <a href="{{ route('detail.pengadaan', $pengadaan->id_pengadaan) }}" class="btn rounded-pill btn-warning">Lihat</a>
                                 <form action="{{ route('destroy.pengadaan', $pengadaan->id_pengadaan) }}" method="POST" style="display:inline;" onsubmit="return confirm('Apakah Anda yakin ingin menghapus pengadaan ini?');">
@@ -56,3 +64,8 @@
 
 </div>
 @endsection
+
+WHEN p.status = 'A' THEN 'Diterima'
+        WHEN p.status = 'C' THEN 'Batal'
+        WHEN p.status = 'P' THEN 'Proses'
+    END AS status_pengadaan

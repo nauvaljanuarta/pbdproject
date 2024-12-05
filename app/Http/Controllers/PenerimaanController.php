@@ -38,10 +38,21 @@ class PenerimaanController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Penerimaan $penerimaan)
-    {
+    public function show($id)
+{
+    // Mengambil data penerimaan berdasarkan ID
+    $penerimaan = DB::table('view_penerimaan')
+        ->where('idpenerimaan', $id)
+        ->first();
 
-    }
+    // Mengambil detail penerimaan barang
+    $detailPenerimaan = DB::table('view_detail_penerimaan')
+        ->where('idpenerimaan', $id)
+        ->get();
+
+    return view('penerimaan.detail', compact('penerimaan', 'detailPenerimaan'));
+}
+
 
     /**
      * Show the form for editing the specified resource.

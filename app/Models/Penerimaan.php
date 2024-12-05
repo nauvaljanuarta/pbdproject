@@ -9,4 +9,9 @@ class Penerimaan extends Model
 {
 
     protected $table='view_penerimaan';
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'iduser', 'iduser');
+    }
 }

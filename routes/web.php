@@ -80,4 +80,5 @@ Route::delete('admin/pengadaan/{id}', [PengadaanController::class, 'destroy'])->
 // penerimaan
 Route::get('admin/penerimaan', [PenerimaanController::class, 'index']);
 Route::post('admin/penerimaan/{id}', [PenerimaanController::class, 'store'])->name('add.penerimaan');
+Route::get('/penerimaan/detail/{idpenerimaan}', [PenerimaanController::class, 'show'])->name('detail.penerimaan');
 
