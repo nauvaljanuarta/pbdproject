@@ -10,6 +10,7 @@ use App\Http\Controllers\VendorController;
 use App\Http\Controllers\MarginController;
 use App\Http\Controllers\PengadaanController;
 use App\Http\Controllers\PenerimaanController;
+use App\Http\Controllers\ReturController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -82,3 +83,7 @@ Route::get('admin/penerimaan', [PenerimaanController::class, 'index']);
 Route::post('admin/penerimaan/{id}', [PenerimaanController::class, 'store'])->name('add.penerimaan');
 Route::get('/penerimaan/detail/{idpenerimaan}', [PenerimaanController::class, 'show'])->name('detail.penerimaan');
 
+//
+Route::get('admin/retur', [ReturController::class, 'index']);
+Route::post('admin/retur/{id}', [ReturController::class, 'store'])->name('add.retur');
+Route::get('/retur/detail/{idretur}', [ReturController::class, 'show'])->name('detail.retur');

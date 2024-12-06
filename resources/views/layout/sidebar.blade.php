@@ -180,9 +180,17 @@
                 <div class="text-truncate" data-i18n="Detail">Detail</div>
             </a>
         </li>
+        </ul>
+      </li>
+      <li class="menu-item">
+        <a href="#" class="menu-link menu-toggle">
+            <i class="menu-icon tf-icons bx bx-cart-download"></i>
+            <div class="text-truncate" data-i18n="Retur">Retur</div>
+        </a>
+        <ul class="menu-sub">
         <li class="menu-item">
-            <a href="/admin/penerimaan/create" class="menu-link">
-              <div class="text-truncate" data-i18n="Tambah">Tambah</div>
+            <a href="/admin/retur" class="menu-link">
+                <div class="text-truncate" data-i18n="Detail">Detail</div>
             </a>
         </li>
         </ul>
