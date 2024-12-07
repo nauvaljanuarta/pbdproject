@@ -5,8 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Retur extends Model
+class DetailPenjualan extends Model
 {
-    protected $table = 'view_returr';
-    protected $primaryKey = 'idretur';
+    use HasFactory;
 }

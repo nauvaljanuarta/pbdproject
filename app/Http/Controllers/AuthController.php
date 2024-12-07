@@ -23,13 +23,12 @@ class AuthController extends Controller
 
         $user = DB::table('user')->where('username', $request->username)->first();
 
-        if ($user) {
+        if ($user && $request->password == $user->password) {
+            // Log the user in using the user ID
+            Auth::loginUsingId($user->iduser);
 
-            if ($request->password == $user->password) {
-                Auth::loginUsingId($user->iduser);
-
-                return redirect('/dashboard')->with('success', 'Login berhasil.');
-            }
+            // Redirect to dashboard after successful login
+            return redirect('/dashboard')->with('success', 'Login berhasil.');
         }
 
         // Jika username atau password salah

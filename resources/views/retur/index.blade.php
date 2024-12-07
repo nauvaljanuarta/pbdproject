@@ -28,7 +28,7 @@
                             <tr>
                                 <td>{{ $key + 1 }}</td>
                                 <td>{{ $retur->idpenerimaan }}</td>
-                                <td>{{ $retur->user->username }}</td> <!-- Menampilkan nama user penerima -->
+                                <td>{{ $retur->nama_user }}</td> <!-- Menampilkan nama user penerima -->
                                 <td>
                                     @if($retur->status === 'P')
                                         <span class="text-warning">Pending</span>
@@ -38,9 +38,9 @@
                                         <span class="text-danger">Retur</span>
                                     @endif
                                 </td>
-                                <td>{{ $retur->created_at }}</td>
+                                <td>{{ $retur->tanggal_retur }}</td>
                                 <td>
-                                    <a href="{{ route('retur.detail', $retur->idretur) }}" class="btn btn-primary btn-sm">
+                                    <a href="{{ route('detail.retur', $retur->idretur) }}" class="btn btn-primary btn-sm">
                                         Lihat Detail
                                     </a>
                                 </td>

@@ -14,10 +14,10 @@
         <div class="card-body">
             <div class="row mb-3">
                 <div class="col-md-6">
-                    <strong>ID Penerimaan: </strong> {{ $retur->penerimaan->idpengadaan }}
+                    <strong>ID Retur: </strong> {{ $retur->idretur }}
                 </div>
                 <div class="col-md-6">
-                    <strong>User Penerima: </strong> {{ $retur->user->username ?? 'Tidak Diketahui' }}
+                    <strong>User Penerima: </strong> {{ $retur->nama_user ?? 'Tidak Diketahui' }}
                 </div>
             </div>
             <div class="row mb-3">
@@ -56,14 +56,14 @@
                     </thead>
                     <tbody>
                         @foreach($detailRetur as $key => $detail)
-                            <tr>
-                                <td>{{ $key + 1 }}</td>
-                                <td>{{ $detail->barang->nama }}</td>
-                                <td>{{ $detail->jumlah }}</td>
-                                <td>Rp {{ number_format($detail->harga_satuan_terima, 0, ',', '.') }}</td>
-                                <td>Rp {{ number_format($detail->sub_total_terima, 0, ',', '.') }}</td>
-                                <td>{{ $detail->alasan }}</td>
-                            </tr>
+                        <tr>
+                            <td>{{ $key + 1 }}</td>
+                            <td>{{ $detail->nama_barang }}</td>
+                            <td>{{ $detail->jumlah_dikembalikan }}</td>
+                            <td>Rp {{ number_format($detail->harga_satuan_terima, 0, ',', '.') }}</td>
+                            <td>Rp {{ number_format($detail->sub_total_terima, 0, ',', '.') }}</td>
+                            <td>{{ $detail->alasan }}</td>
+                        </tr>
                         @endforeach
                     </tbody>
                 </table>

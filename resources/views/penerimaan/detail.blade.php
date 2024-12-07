@@ -68,5 +68,52 @@
             </div>
         </div>
     </div>
+
+    <!-- Tombol Aksi -->
+    <div class="card mb-4">
+        <div class="card-body d-flex justify-content-between">
+            {{-- Tombol Masukkan Stok --}}
+            {{-- <form action="{{ route('penerimaan.masukkanStok', $penerimaan->idpenerimaan) }}" method="POST"> --}}
+                @csrf
+                <button type="submit" class="btn btn-success">Masukkan Stok</button>
+            {{-- </form> --}}
+
+            {{-- Tombol Retur --}}
+            <button type="button" class="btn btn-danger" id="btnRetur" onclick="showReturForm()">Retur</button>
+        </div>
+    </div>
+
+    <!-- Form Alasan Retur (hidden by default) -->
+    <div class="card" id="formRetur" style="display: none;">
+        <div class="card-body">
+            <h4 class="card-header">Alasan Retur</h4>
+            <form action="{{ route('add.retur', $penerimaan->idpenerimaan) }}" method="POST">
+                @csrf
+                <div class="form-group">
+                    <label for="alasan">Alasan Retur</label>
+                    <textarea class="form-control" id="alasan" name="alasan" rows="4" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-danger mt-3">Kirim Retur</button>
+                <button type="button" class="btn btn-secondary mt-3" onclick="hideReturForm()">Batal</button>
+            </form>
+        </div>
+    </div>
+
 </div>
+
+<!-- Script untuk Menampilkan dan Menyembunyikan Form -->
+<script>
+    // Menampilkan form alasan retur
+    function showReturForm() {
+        document.getElementById("formRetur").style.display = "block"; // Menampilkan form
+        document.getElementById("btnRetur").style.display = "none"; // Menyembunyikan tombol "Retur"
+    }
+
+    // Menyembunyikan form alasan retur
+    function hideReturForm() {
+        document.getElementById("formRetur").style.display = "none"; // Menyembunyikan form
+        document.getElementById("btnRetur").style.display = "inline-block"; // Menampilkan kembali tombol "Retur"
+    }
+</script>
+
 @endsection

@@ -1,10 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\SatuanController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\VendorController;
 use App\Http\Controllers\MarginController;
@@ -12,78 +12,78 @@ use App\Http\Controllers\PengadaanController;
 use App\Http\Controllers\PenerimaanController;
 use App\Http\Controllers\ReturController;
 
-Route::get('/', function () {
-    return view('auth.login');
-});
+// Route::get('/', function () {
+//     return view('auth.login');
+// });
 
-Route::get('/admin/role', function () {
-    return view('admin.role');
-});
+// Route::get('/admin/role', function () {
+//     return view('admin.role');
+// });
 
 
-Route::get('/coba', function () {
-    return view('pengadaan.detail');
-});
+// Route::get('/coba', function () {
+//     return view('pengadaan.detail');
+// });
 
 // Auth routes
-Route::get('/', [AuthController::class, 'loginview']);
+Route::get('/', [AuthController::class, 'loginview'])->name('loginpage');
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::get('/register', [AuthController::class, 'registerview']);
 Route::post('/register', [AuthController::class, 'register'])->middleware('guest');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::get('/dashboard', [UserController::class, 'index'])->name('dashboard');
+Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', [UserController::class, 'index'])->name('dashboard');
+    //role
+    Route::get('admin/role', [RoleController::class, 'index']);
+    Route::post('admin/role/add', [RoleController::class, 'store'])->name('add.role');
+    Route::put('admin/role/{id}', [RoleController::class, 'update'])->name('update.role');
+    Route::delete('admin/role/{id}', [RoleController::class, 'destroy'])->name('destroy.role');
 
+    //user
+    Route::get('admin/user', [UserController::class, 'detail']);
+    Route::post('admin/user/add', [UserController::class, 'store'])->name('add.user');
+    Route::put('admin/user/{id}', [UserController::class, 'update'])->name('update.user');
+    Route::delete('admin/user/{id}', [UserController::class, 'destroy'])->name('destroy.user');
 
-//role
-Route::get('admin/role', [RoleController::class, 'index']);
-Route::post('admin/role/add', [RoleController::class, 'store'])->name('add.role');
-Route::put('admin/role/{id}', [RoleController::class, 'update'])->name('update.role');
-Route::delete('admin/role/{id}', [RoleController::class, 'destroy'])->name('destroy.role');
+    //satuan
+    Route::get('admin/satuan', [SatuanController::class, 'index']);
+    Route::post('admin/satuan/add', [SatuanController::class, 'store'])->name('add.satuan');
+    Route::put('admin/satuan/{id}', [SatuanController::class, 'update'])->name('update.satuan');
+    Route::delete('admin/satuan/{id}', [SatuanController::class, 'destroy'])->name('destroy.satuan');
 
-//user
-Route::get('admin/user', [UserController::class, 'detail']);
-Route::post('admin/user/add', [UserController::class, 'store'])->name('add.user');
-Route::put('admin/user/{id}', [UserController::class, 'update'])->name('update.user');
-Route::delete('admin/user/{id}', [UserController::class, 'destroy'])->name('destroy.user');
+    //barang
+    Route::get('admin/barang', [BarangController::class, 'index']);
+    Route::post('admin/barang/add', [BarangController::class, 'store'])->name('add.barang');
+    Route::put('admin/barang/{id}', [BarangController::class, 'update'])->name('update.barang');
+    Route::delete('admin/barang/{id}', [BarangController::class, 'destroy'])->name('destroy.barang');
 
-//satuan
-Route::get('admin/satuan', [SatuanController::class, 'index']);
-Route::post('admin/satuan/add', [SatuanController::class, 'store'])->name('add.satuan');
-Route::put('admin/satuan/{id}', [SatuanController::class, 'update'])->name('update.satuan');
-Route::delete('admin/satuan/{id}', [SatuanController::class, 'destroy'])->name('destroy.satuan');
+    //vendor
+    Route::get('admin/vendor', [VendorController::class, 'index']);
+    Route::post('admin/vendor/add', [VendorController::class, 'store'])->name('add.vendor');
+    Route::put('admin/vendor/{id}', [VendorController::class, 'update'])->name('update.vendor');
+    Route::delete('admin/vendor/{id}', [VendorController::class, 'destroy'])->name('destroy.vendor');
 
-//barang
-Route::get('admin/barang', [BarangController::class, 'index']);
-Route::post('admin/barang/add', [BarangController::class, 'store'])->name('add.barang');
-Route::put('admin/barang/{id}', [BarangController::class, 'update'])->name('update.barang');
-Route::delete('admin/barang/{id}', [BarangController::class, 'destroy'])->name('destroy.barang');
+    // marginpenjualan
+    Route::get('admin/margin', [MarginController::class, 'index']);
+    Route::post('admin/margin/add', [MarginController::class, 'store'])->name('add.margin');
+    Route::put('admin/margin/{id}', [MarginController::class, 'update'])->name('update.margin');
+    Route::delete('admin/margin/{id}', [MarginController::class, 'destroy'])->name('destroy.margin');
 
-//vendor
-Route::get('admin/vendor', [VendorController::class, 'index']);
-Route::post('admin/vendor/add', [VendorController::class, 'store'])->name('add.vendor');
-Route::put('admin/vendor/{id}', [VendorController::class, 'update'])->name('update.vendor');
-Route::delete('admin/vendor/{id}', [VendorController::class, 'destroy'])->name('destroy.vendor');
+    //pengadaan
+    Route::get('admin/pengadaan', [PengadaanController::class, 'index']);
+    Route::get('admin/pengadaan/create', [PengadaanController::class, 'create'])->name('create.pengadaan');
+    Route::post('admin/pengadaan/add', [PengadaanController::class, 'store'])->name('add.pengadaan');
+    Route::get('admin/pengadaan/detail/{id}', [PengadaanController::class, 'show'])->name('detail.pengadaan');
+    Route::delete('admin/pengadaan/{id}', [PengadaanController::class, 'destroy'])->name('destroy.pengadaan');
 
-// marginpenjualan
-Route::get('admin/margin', [MarginController::class, 'index']);
-Route::post('admin/margin/add', [MarginController::class, 'store'])->name('add.margin');
-Route::put('admin/margin/{id}', [MarginController::class, 'update'])->name('update.margin');
-Route::delete('admin/margin/{id}', [MarginController::class, 'destroy'])->name('destroy.margin');
+    // penerimaan
+    Route::get('admin/penerimaan', [PenerimaanController::class, 'index']);
+    Route::post('admin/penerimaan/{id}', [PenerimaanController::class, 'store'])->name('add.penerimaan');
+    Route::get('/penerimaan/detail/{idpenerimaan}', [PenerimaanController::class, 'show'])->name('detail.penerimaan');
 
-//pengadaan
-Route::get('admin/pengadaan', [PengadaanController::class, 'index']);
-Route::get('admin/pengadaan/create', [PengadaanController::class, 'create'])->name('create.pengadaan');
-Route::post('admin/pengadaan/add', [PengadaanController::class, 'store'])->name('add.pengadaan');
-Route::get('admin/pengadaan/detail/{id}', [PengadaanController::class, 'show'])->name('detail.pengadaan');
-Route::delete('admin/pengadaan/{id}', [PengadaanController::class, 'destroy'])->name('destroy.pengadaan');
-
-// penerimaan
-Route::get('admin/penerimaan', [PenerimaanController::class, 'index']);
-Route::post('admin/penerimaan/{id}', [PenerimaanController::class, 'store'])->name('add.penerimaan');
-Route::get('/penerimaan/detail/{idpenerimaan}', [PenerimaanController::class, 'show'])->name('detail.penerimaan');
-
-//
-Route::get('admin/retur', [ReturController::class, 'index']);
-Route::post('admin/retur/{id}', [ReturController::class, 'store'])->name('add.retur');
-Route::get('/retur/detail/{idretur}', [ReturController::class, 'show'])->name('detail.retur');
+    //
+    Route::get('admin/retur', [ReturController::class, 'index']);
+    Route::post('admin/retur/{id}', [ReturController::class, 'store'])->name('add.retur');
+    Route::get('/retur/detail/{idretur}', [ReturController::class, 'show'])->name('detail.retur');
+});

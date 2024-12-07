@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Retur;
+use App\Models\DetailRetur;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -14,7 +15,7 @@ class ReturController extends Controller
      */
     public function index()
     {
-        $returs = Retur::with('user', 'penerimaan')->get();  // Mengambil data retur beserta info penerimaan dan user penerima
+        $returs = Retur::all();  // Mengambil data retur beserta info penerimaan dan user penerima
         return view('retur.index', compact('returs'));
     }
 
@@ -38,11 +39,12 @@ class ReturController extends Controller
 
         // Mendapatkan id_user (misalnya ID user yang sedang login)
         $id_user = Auth::id();
+        $alasan = $request->input('alasan');
 
         try {
             // Memanggil stored procedure untuk memproses retur
             DB::beginTransaction();  // Memulai transaksi
-            DB::select('CALL process_retur(?, ?)', [$id_penerimaan, $id_user]);
+            DB::select('CALL sp_create_returr(?, ?, ?)', [$id_penerimaan, $id_user, $alasan]);
             DB::commit();  // Commit transaksi jika berhasil
 
             return redirect()->back()->with('success', 'Retur berhasil diproses!');
@@ -57,9 +59,16 @@ class ReturController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Retur $retur)
+    public function show($id)
     {
-        //
+        $retur = Retur::all()->findOrFail($id); // Menemukan retur berdasarkan ID
+        $detailRetur = DetailRetur::where('idretur', $id)->get();
+
+
+        foreach ($detailRetur as $detail) {
+            $detail->load('barang');
+         } // Memuat data barang terkait // Mengambil detail retur berdasarkan ID retur
+        return view('retur.detail', compact('retur', 'detailRetur'));
     }
 
     /**

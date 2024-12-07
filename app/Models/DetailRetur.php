@@ -7,5 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class DetailRetur extends Model
 {
-    protected $table = 'detail_returr';
+    protected $table = 'view_detail_returr';
+
+    protected $primaryKey = 'iddetail_retur';
+    public function barang()
+    {
+        return $this->belongsTo(Barang::class, 'idbarang', 'idsatuan');
+    }
 }
