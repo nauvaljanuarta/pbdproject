@@ -11,6 +11,7 @@ use App\Http\Controllers\MarginController;
 use App\Http\Controllers\PengadaanController;
 use App\Http\Controllers\PenerimaanController;
 use App\Http\Controllers\ReturController;
+use App\Http\Controllers\StockController;
 
 // Route::get('/', function () {
 //     return view('auth.login');
@@ -82,8 +83,14 @@ Route::middleware('auth')->group(function () {
     Route::post('admin/penerimaan/{id}', [PenerimaanController::class, 'store'])->name('add.penerimaan');
     Route::get('/penerimaan/detail/{idpenerimaan}', [PenerimaanController::class, 'show'])->name('detail.penerimaan');
 
-    //
+    //retur
     Route::get('admin/retur', [ReturController::class, 'index']);
     Route::post('admin/retur/{id}', [ReturController::class, 'store'])->name('add.retur');
-    Route::get('/retur/detail/{idretur}', [ReturController::class, 'show'])->name('detail.retur');
+    Route::get('retur/detail/{idretur}', [ReturController::class, 'show'])->name('detail.retur');
+
+    //stok
+    Route::get('admin/stock', [StockController::class, 'index']);
+    Route::post('admin/stock/jual/{id}', [StockController::class, 'penerimaanstock'])->name('terima.stock');
+    Route::post('admin/stock/terima/{id}', [StockController::class, 'penjualanstock'])->name('jual.stock');
+    Route::post('admin/stock/retur/{id}', [StockController::class, 'returstock'])->name('retur.stock');
 });

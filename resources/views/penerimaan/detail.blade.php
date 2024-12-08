@@ -73,10 +73,10 @@
     <div class="card mb-4">
         <div class="card-body d-flex justify-content-between">
             {{-- Tombol Masukkan Stok --}}
-            {{-- <form action="{{ route('penerimaan.masukkanStok', $penerimaan->idpenerimaan) }}" method="POST"> --}}
+            <form action="{{ route('terima.stock', $penerimaan->idpenerimaan) }}" method="POST">
                 @csrf
                 <button type="submit" class="btn btn-success">Masukkan Stok</button>
-            {{-- </form> --}}
+            </form>
 
             {{-- Tombol Retur --}}
             <button type="button" class="btn btn-danger" id="btnRetur" onclick="showReturForm()">Retur</button>

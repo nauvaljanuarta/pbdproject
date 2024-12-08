@@ -24,9 +24,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($penerimaans as $key => $penerimaan)
+                        @foreach($penerimaans as $penerimaan)
                             <tr>
-                                <td>{{ $key + 1 }}</td>
+                                <td>{{ $penerimaan->idpenerimaan }}</td>
                                 <td>{{ $penerimaan->idpengadaan }}</td>
                                 <td>{{ $penerimaan->penerima }}</td> <!-- Menampilkan username -->
                                 <td>
