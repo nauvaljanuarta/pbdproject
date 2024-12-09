@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Penjualan;
+use App\Models\DetailPenjualan;
 use App\Models\Margin;
 use App\Models\Barang;
 use Illuminate\Http\Request;
@@ -13,7 +14,8 @@ class PenjualanController extends Controller
 {
     public function index()
     {
-
+        $penjualans = Penjualan::all();
+        return view('penjualan.index', compact('penjualans'));
     }
 
     /**
@@ -102,15 +104,15 @@ class PenjualanController extends Controller
     }
 
 
-
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Penjualan $penjualan)
+    public function show($idpenjualan)
     {
-        //
+
+        $penjualan = Penjualan::findOrFail($idpenjualan);
+        $details = DetailPenjualan::where('idpenjualan', $idpenjualan)->get();
+
+        return view('penjualan.detail', compact('penjualan', 'details'));
     }
+
 
     /**
      * Show the form for editing the specified resource.

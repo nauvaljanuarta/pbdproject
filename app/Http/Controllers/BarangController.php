@@ -12,7 +12,7 @@ class BarangController extends Controller
     // Menampilkan daftar barang
     public function index()
     {
-        // Mengambil data barang melalui view_barang
+        
         $barangs = Barang::all();
         $satuans = Satuan::all();
         return view('admin.barang', compact('barangs', 'satuans'));

@@ -24,11 +24,11 @@
             <div class="row mb-3">
                 <div class="col-md-6">
                     <strong>Status : </strong>
-                    @if($pengadaan->status_pengadaan == 'Proses')
+                    @if($pengadaan->status_pengadaan == 'P')
                         Proses
-                    @elseif($pengadaan->status_pengadaan == 'Diterima')
-                        Selesai
-                    @elseif($pengadaan->status_pengadaan == 'Batal')
+                    @elseif($pengadaan->status_pengadaan == 'A')
+                        Diterima
+                    @elseif($pengadaan->status_pengadaan == 'C')
                         Batal
                     @endif
                 </div>

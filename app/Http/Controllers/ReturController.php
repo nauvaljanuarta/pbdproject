@@ -61,13 +61,13 @@ class ReturController extends Controller
      */
     public function show($id)
     {
-        $retur = Retur::all()->findOrFail($id); // Menemukan retur berdasarkan ID
+        $retur = Retur::all()->findOrFail($id);
         $detailRetur = DetailRetur::where('idretur', $id)->get();
 
 
         foreach ($detailRetur as $detail) {
             $detail->load('barang');
-         } // Memuat data barang terkait // Mengambil detail retur berdasarkan ID retur
+         }
         return view('retur.detail', compact('retur', 'detailRetur'));
     }
 

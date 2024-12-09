@@ -13,19 +13,21 @@ class StockController extends Controller
      */
     public function index()
     {
-        $stocks=Stock::all();
-        return view('stock.index',compact('stocks'));
+        $stocks = Stock::orderBy('idkartu_Stok', 'asc')->get();
+        $currentStocks = DB::select("
+        SELECT s.idbarang, b.nama AS nama_barang, MAX(s.stock) AS current_stock
+        FROM stock s
+        JOIN barang b ON s.idbarang = b.idbarang
+        GROUP BY s.idbarang, b.nama
+    ");
+        return view('stock.index',compact('stocks', 'currentStocks'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function penerimaanStock($idPenerimaan)
 {
     try {
         DB::beginTransaction();
 
-        // Mendapatkan detail penerimaan
         $detailPenerimaan = DB::select('SELECT * FROM detail_penerimaan WHERE idpenerimaan = ?', [$idPenerimaan]);
 
         foreach ($detailPenerimaan as $detail) {
@@ -37,14 +39,14 @@ class StockController extends Controller
             );
 
             if ($stokBarang) {
-                // Menambahkan stok baru
+                // barang baru
                 DB::insert('
                     INSERT INTO stock (jenis_transaksi, masuk, keluar, stock, created_at, idtransaksi, idbarang)
                     VALUES (?, ?, ?, ?, ?, ?, ?)',
                     ['P', $detail->jumlah_terima, 0, $stokBarang[0]->stock + $detail->jumlah_terima, now(), $idPenerimaan, $detail->barang_idbarang]
                 );
             } else {
-                // Jika stok barang belum ada
+                // barang lama
                 DB::insert('
                     INSERT INTO stock (jenis_transaksi, masuk, keluar, stock, created_at, idtransaksi, idbarang)
                     VALUES (?, ?, ?, ?, ?, ?, ?)',
@@ -52,8 +54,6 @@ class StockController extends Controller
                 );
             }
         }
-
-        // Update status penerimaan menjadi 'Diterima'
         DB::update('UPDATE penerimaan SET status = ? WHERE idpenerimaan = ?', ['A', $idPenerimaan]);
 
         DB::commit();
@@ -66,11 +66,6 @@ class StockController extends Controller
     }
 }
 
-
-    public function penjualanstock()
-    {
-        
-    }
     public function returstock()
     {
         //

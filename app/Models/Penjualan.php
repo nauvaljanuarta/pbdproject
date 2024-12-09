@@ -7,5 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Penjualan extends Model
 {
-    protected $table = 'penjualan';
+    protected $table = 'view_penjualan';
+    protected $primaryKey = 'idpenjualan';
 }

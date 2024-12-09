@@ -7,5 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class DetailPenjualan extends Model
 {
-    use HasFactory;
+    protected $table = 'view_detail_penjualan';
+    
 }

@@ -11,9 +11,7 @@ class SatuanController extends Controller
 
     public function index()
     {
-        // Fetch all records from the view_satuan view using the model
         $satuan = Satuan::all();
-
         return view('admin.satuan', compact('satuan'));
     }
 
