@@ -20,28 +20,56 @@ class StockController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function penerimaanstock($idPenerimaan)
-    {
-        try {
-            // Memanggil stored procedure untuk memasukkan stok
-            DB::beginTransaction(); // Memulai transaksi
+    public function penerimaanStock($idPenerimaan)
+{
+    try {
+        DB::beginTransaction();
 
-            // Memanggil stored procedure
-            DB::select('CALL sp_insert_stok_penerimaan(?)', [$idPenerimaan]);
+        // Mendapatkan detail penerimaan
+        $detailPenerimaan = DB::select('SELECT * FROM detail_penerimaan WHERE idpenerimaan = ?', [$idPenerimaan]);
 
-            DB::commit(); // Menyimpan transaksi jika tidak ada error
+        foreach ($detailPenerimaan as $detail) {
+            $stokBarang = DB::select('
+                SELECT * FROM stock
+                WHERE idbarang = ?
+                ORDER BY idkartu_Stok DESC LIMIT 1',
+                [$detail->barang_idbarang]
+            );
 
-            return redirect('/admin/stock')->with('success', 'Stok berhasil diperbarui.');
-
-        } catch (\Exception $e) {
-            DB::rollBack(); // Jika terjadi error, rollback transaksi
-            dd($e);
-            return redirect()->back()->with('error', 'Terjadi kesalahan saat memperbarui stok: ' . $e->getMessage());
+            if ($stokBarang) {
+                // Menambahkan stok baru
+                DB::insert('
+                    INSERT INTO stock (jenis_transaksi, masuk, keluar, stock, created_at, idtransaksi, idbarang)
+                    VALUES (?, ?, ?, ?, ?, ?, ?)',
+                    ['P', $detail->jumlah_terima, 0, $stokBarang[0]->stock + $detail->jumlah_terima, now(), $idPenerimaan, $detail->barang_idbarang]
+                );
+            } else {
+                // Jika stok barang belum ada
+                DB::insert('
+                    INSERT INTO stock (jenis_transaksi, masuk, keluar, stock, created_at, idtransaksi, idbarang)
+                    VALUES (?, ?, ?, ?, ?, ?, ?)',
+                    ['P', $detail->jumlah_terima, 0, $detail->jumlah_terima, now(), $idPenerimaan, $detail->barang_idbarang]
+                );
+            }
         }
+
+        // Update status penerimaan menjadi 'Diterima'
+        DB::update('UPDATE penerimaan SET status = ? WHERE idpenerimaan = ?', ['A', $idPenerimaan]);
+
+        DB::commit();
+
+        return redirect('/admin/stock')->with('success', 'Stok berhasil diperbarui.');
+    } catch (\Exception $e) {
+        DB::rollBack();
+        dd($e);
+        return redirect()->back()->with('error', 'Terjadi kesalahan saat memperbarui stok: ' . $e->getMessage());
     }
+}
+
+
     public function penjualanstock()
     {
-        //
+        
     }
     public function returstock()
     {

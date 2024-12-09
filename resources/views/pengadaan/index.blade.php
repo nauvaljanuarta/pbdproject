@@ -41,7 +41,7 @@
                                 @elseif($pengadaan->status_pengadaan === 'A')
                                     <span class="text-success">Diterima</span>
                                 @elseif($pengadaan->status_pengadaan === 'P')
-                                    <span class="text-warning">Pending</span> 
+                                    <span class="text-warning">Pending</span>
                                 @endif
                             </td>
                             <td>
@@ -64,8 +64,3 @@
 
 </div>
 @endsection
-
-WHEN p.status = 'A' THEN 'Diterima'
-        WHEN p.status = 'C' THEN 'Batal'
-        WHEN p.status = 'P' THEN 'Proses'
-    END AS status_pengadaan

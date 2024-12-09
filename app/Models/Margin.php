@@ -11,6 +11,7 @@ class Margin extends Model
 
     // Karena ini adalah view, kita nonaktifkan timestamps
     public $timestamps = false;
+    protected $primaryKey = 'idmargin_penjualan';
 
     // Tentukan kolom yang bisa diakses secara mass-assignment
     protected $fillable = [

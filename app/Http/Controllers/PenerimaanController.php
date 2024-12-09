@@ -19,11 +19,11 @@ class PenerimaanController extends Controller
         try {
             DB::beginTransaction();
 
-            $iduser = Auth::id(); // ID user yang melakukan penerimaan (diambil dari sesi login)
-            // Panggil Stored Procedure untuk menambahkan penerimaan dan detail_penerimaan
+            $iduser = Auth::id();
+
             DB::statement('CALL sp_create_penerimaan(?, ?)', [
-                $id_pengadaan,  // ID Pengadaan
-                $iduser,         // ID User Penerima
+                $id_pengadaan,
+                $iduser,            
             ]);
             DB::commit();
 
