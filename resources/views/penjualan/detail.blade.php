@@ -16,7 +16,7 @@
         <div class="card-body">
             <p><strong>ID Penjualan:</strong> {{ $penjualan->idpenjualan }}</p>
             <p><strong>Nama User:</strong> {{ $penjualan->nama_user }}</p>
-            <p><strong>Margin Penjualan:</strong> {{ $penjualan->persen_margin ?? 0 }}%</p>
+            <p><strong>Margin Penjualan:</strong> {{ $penjualan->margin_persen ?? 0 }}%</p>
             <p><strong>Subtotal:</strong> Rp {{ number_format($penjualan->subtotal_nilai, 0, ',', '.') }}</p>
             <p><strong>PPN:</strong> Rp {{ number_format($penjualan->ppn, 0, ',', '.') }}</p>
             <p><strong>Total:</strong> Rp {{ number_format($penjualan->total_nilai, 0, ',', '.') }}</p>

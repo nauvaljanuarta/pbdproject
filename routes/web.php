@@ -77,6 +77,8 @@ Route::middleware('auth')->group(function () {
     Route::get('admin/pengadaan/create', [PengadaanController::class, 'create'])->name('create.pengadaan');
     Route::post('admin/pengadaan/add', [PengadaanController::class, 'store'])->name('add.pengadaan');
     Route::get('admin/pengadaan/detail/{id}', [PengadaanController::class, 'show'])->name('detail.pengadaan');
+    Route::get('admin/pengadaan/{id}/edit', [PengadaanController::class, 'edit'])->name('pengadaan.edit');
+    Route::put('admin/pengadaan/{id}/update', [PengadaanController::class, 'update'])->name('pengadaan.update');
     Route::delete('admin/pengadaan/{id}', [PengadaanController::class, 'destroy'])->name('destroy.pengadaan');
 
     // penerimaan

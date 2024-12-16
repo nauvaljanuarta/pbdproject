@@ -15,7 +15,7 @@ class ReturController extends Controller
      */
     public function index()
     {
-        $returs = Retur::all();  // Mengambil data retur beserta info penerimaan dan user penerima
+        $returs = Retur::all(); // Mengambil data retur beserta info penerimaan dan user penerima
         return view('retur.index', compact('returs'));
     }
 
@@ -34,7 +34,7 @@ class ReturController extends Controller
     {
         // Validasi jika id_penerimaan ada
         $request->validate([
-            'alasan' => 'required|string|max:255',  // Validasi alasan retur jika perlu
+            'alasan' => 'required|string|max:255', // Validasi alasan retur jika perlu
         ]);
 
         // Mendapatkan id_user (misalnya ID user yang sedang login)
@@ -42,17 +42,26 @@ class ReturController extends Controller
         $alasan = $request->input('alasan');
 
         try {
+            $statusPenerimaan = DB::table('penerimaan')->where('idpenerimaan', $id_penerimaan)->value('status');
+
+            if ($statusPenerimaan == 'R') {
+                return redirect()->back()->with('error', 'Penerimaan sudah diretur, tidak bisa diproses lagi.');
+            } elseif ($statusPenerimaan == 'A') {
+                return redirect()->back()->with('success', 'Penerimaan sudah diterima, tidak bisa diproses lagi.');
+            }
             // Memanggil stored procedure untuk memproses retur
-            DB::beginTransaction();  // Memulai transaksi
+            DB::beginTransaction(); // Memulai transaksi
             DB::select('CALL sp_create_returr(?, ?, ?)', [$id_penerimaan, $id_user, $alasan]);
-            DB::commit();  // Commit transaksi jika berhasil
+            DB::commit(); // Commit transaksi jika berhasil
 
             return redirect()->back()->with('success', 'Retur berhasil diproses!');
         } catch (\Exception $e) {
-            DB::rollBack();  // Rollback transaksi jika terjadi kesalahan
+            DB::rollBack(); // Rollback transaksi jika terjadi kesalahan
             dd($e);
             // Menampilkan pesan error
-            return redirect()->route('penerimaan.index')->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()
+                ->route('penerimaan.index')
+                ->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
 
@@ -64,10 +73,9 @@ class ReturController extends Controller
         $retur = Retur::all()->findOrFail($id);
         $detailRetur = DetailRetur::where('idretur', $id)->get();
 
-
         foreach ($detailRetur as $detail) {
             $detail->load('barang');
-         }
+        }
         return view('retur.detail', compact('retur', 'detailRetur'));
     }
 

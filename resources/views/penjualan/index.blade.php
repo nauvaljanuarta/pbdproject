@@ -32,7 +32,7 @@
                                 <tr>
                                     <td>{{ $penjualan->idpenjualan }}</td>
                                     <td>{{ $penjualan->nama_user }}</td>
-                                    <td>{{ $penjualan->persen_margin }}</td>
+                                    <td>{{ $penjualan->margin_persen }}%</td>
                                     <td>Rp {{ number_format($penjualan->subtotal_nilai, 0, ',', '.') }}</td>
                                     <td>Rp {{ number_format($penjualan->ppn, 0, ',', '.') }}</td>
                                     <td>Rp {{ number_format($penjualan->total_nilai, 0, ',', '.') }}</td>

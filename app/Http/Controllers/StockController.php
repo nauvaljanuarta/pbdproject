@@ -26,6 +26,13 @@ class StockController extends Controller
     public function penerimaanStock($idPenerimaan)
 {
     try {
+        $statusPenerimaan = DB::table('penerimaan')->where('idpenerimaan', $idPenerimaan)->value('status');
+
+        if ($statusPenerimaan == 'A') {
+            return redirect()->back()->with('success', 'Penerimaan sudah diterima, tidak bisa diproses lagi.');
+        } elseif ($statusPenerimaan == 'R')
+            return redirect()->back()->with('error', 'Penerimaan sudah diretur, tidak bisa diproses lagi.');
+
         DB::beginTransaction();
 
         $detailPenerimaan = DB::select('SELECT * FROM detail_penerimaan WHERE idpenerimaan = ?', [$idPenerimaan]);

@@ -18,7 +18,6 @@
                             <th>No</th>
                             <th>ID Penerimaan</th>
                             <th>User Penerima</th>
-                            <th>Status</th>
                             <th>Tanggal Retur</th>
                             <th>Aksi</th>
                         </tr>
@@ -29,15 +28,6 @@
                                 <td>{{ $key + 1 }}</td>
                                 <td>{{ $retur->idpenerimaan }}</td>
                                 <td>{{ $retur->nama_user }}</td> <!-- Menampilkan nama user penerima -->
-                                <td>
-                                    @if($retur->status === 'P')
-                                        <span class="text-warning">Pending</span>
-                                    @elseif($retur->status === 'A')
-                                        <span class="text-success">Diterima</span>
-                                    @elseif($retur->status === 'R')
-                                        <span class="text-danger">Retur</span>
-                                    @endif
-                                </td>
                                 <td>{{ $retur->tanggal_retur }}</td>
                                 <td>
                                     <a href="{{ route('detail.retur', $retur->idretur) }}" class="btn btn-primary btn-sm">

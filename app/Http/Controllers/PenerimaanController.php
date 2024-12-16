@@ -17,13 +17,18 @@ class PenerimaanController extends Controller
     public function store(Request $request, $id_pengadaan)
     {
         try {
+            $statusPengadaan = DB::table('pengadaan')->where('idpengadaan', $id_pengadaan)->value('status');
+
+        if ($statusPengadaan == 'A') {
+            return redirect()->back()->with('error', 'Pengadaan sudah diterima, tidak bisa diproses lagi.');
+        }
             DB::beginTransaction();
 
             $iduser = Auth::id();
 
             DB::statement('CALL sp_create_penerimaan(?, ?)', [
                 $id_pengadaan,
-                $iduser,            
+                $iduser,
             ]);
             DB::commit();
 
